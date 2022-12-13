@@ -44,7 +44,7 @@ def solve_part_two():
   first_divider_packet = [[2]]
   second_divider_packet = [[6]]
   position_of_first_divider = 1
-  position_of_second_divider = 1
+  position_of_second_divider = 2 # after first divider!
   for p in input:
     if compare(p,first_divider_packet) == RIGHT_ORDER:
       position_of_first_divider += 1
