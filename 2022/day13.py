@@ -6,7 +6,7 @@ def compare(a,b):
       return False 
     result = True
     for x,y in zip(a,b):
-      result = result or compare(x,y)
+      result = result and compare(x,y)
     return result
   elif isinstance(a,list):
     y = [b]
