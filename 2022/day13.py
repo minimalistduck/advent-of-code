@@ -18,7 +18,7 @@ def compare(a,b):
     return a <= b
     
 
-result = 0
+result = []
 i = 0
 while i < len(input):
   first = input[i]
@@ -26,6 +26,7 @@ while i < len(input):
   i += 2
   pair_num = i/2
   if compare(first,second):
-    result += pair_num  
+    result.append(pair_num) 
 
 print(result)
+print(sum(result))
