@@ -1,5 +1,6 @@
 name: prepare
-on: push
+on: 
+  workflow-dispatch:
   
 jobs:
   prepare:
