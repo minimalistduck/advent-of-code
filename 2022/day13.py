@@ -8,7 +8,7 @@ def compare(a,b):
   if isinstance(a,list) and isinstance(b,list):
     result = RIGHT_ORDER
     for x,y in zip(a,b):
-      result = compare(x.y)
+      result = compare(x,y)
       if result != CONTINUE:
         return result
     return compare(len(a),len(b))
