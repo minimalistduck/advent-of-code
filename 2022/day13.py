@@ -1,21 +1,28 @@
 from example_input import input
 
+RIGHT_ORDER = 1
+WRONG_ORDER = -1
+CONTINUE = 0
+
 def compare(a,b):
   if isinstance(a,list) and isinstance(b,list):
-    if len(a) > len(b):
-      return False 
-    result = True
+    result = RIGHT_ORDER
     for x,y in zip(a,b):
-      result = result and compare(x,y)
-    return result
+      result = compare(x.y)
+      if result <> CONTINUE:
+        return result
+    return compare(len(a),len(b))
   elif isinstance(a,list):
-    y = [b]
-    return compare(a,y)
+    return compare(a,[b])
   elif isinstance(b,list):
-    x = [a]
-    return compare(x,b)
+    return compare([a],b)
   else:
-    return a <= b
+    if a < b:
+      return RIGHT_ORDER
+    elif a > b:
+      return WRONG_ORDER
+    else:
+      return CONTINUE
     
 
 result = []
@@ -25,7 +32,7 @@ while i < len(input):
   second = input[i+1]
   i += 2
   pair_num = i/2
-  if compare(first,second):
+  if compare(first,second) <> WRONG_ORDER:
     result.append(pair_num) 
 
 print(result)
