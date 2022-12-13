@@ -1,6 +1,6 @@
 name: prepare
 on: 
-  workflow-dispatch:
+  workflow_dispatch:
   
 jobs:
   prepare:
