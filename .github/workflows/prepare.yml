@@ -3,13 +3,13 @@ on:
   workflow_dispatch:
   
 jobs:
-  prepare:
+  prepare-day13:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - run: |
           cd 2022
-          .\Convert-InputToPython.ps1
+          .\Convert-Day13InputToPython.ps1
         shell: powershell
       - uses: stefanzweifel/git-auto-commit-action@v4
         if: always()
