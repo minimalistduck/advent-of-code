@@ -1,4 +1,4 @@
-from input import input
+from example_input import input
 
 def compare(a,b):
   if isinstance(a,list) and isinstance(b,list):
