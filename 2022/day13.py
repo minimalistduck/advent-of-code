@@ -2,7 +2,7 @@ from example_input import input
 
 def compare(a,b):
   if isinstance(a,list) and isinstance(b,list):
-    if len(a) > len(b):
+    if len(a) < len(b):
       return False 
     result = True
     for x,y in zip(a,b):
