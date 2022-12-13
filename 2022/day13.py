@@ -1,4 +1,4 @@
-from example_input import input
+from input import input
 
 RIGHT_ORDER = 1
 WRONG_ORDER = -1
