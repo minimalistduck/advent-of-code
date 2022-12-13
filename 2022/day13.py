@@ -9,7 +9,7 @@ def compare(a,b):
     result = RIGHT_ORDER
     for x,y in zip(a,b):
       result = compare(x.y)
-      if result <> CONTINUE:
+      if result != CONTINUE:
         return result
     return compare(len(a),len(b))
   elif isinstance(a,list):
@@ -32,7 +32,7 @@ while i < len(input):
   second = input[i+1]
   i += 2
   pair_num = i/2
-  if compare(first,second) <> WRONG_ORDER:
+  if compare(first,second) != WRONG_ORDER:
     result.append(pair_num) 
 
 print(result)
