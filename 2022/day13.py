@@ -14,7 +14,7 @@ def compare(a,b):
   elif isinstance(b,list):
     x = [a]
     return compare(x,b)
-  else
+  else:
     return a <= b
     
 
