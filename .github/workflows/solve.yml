@@ -1,5 +1,7 @@
 name: solve
-on: [push]
+on:
+  workflow_dispatch:
+
 jobs:
   solve:
     runs-on: windows-latest
