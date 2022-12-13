@@ -1,4 +1,4 @@
-from input import input
+from day13_input import input
 
 RIGHT_ORDER = 1
 WRONG_ORDER = -1
