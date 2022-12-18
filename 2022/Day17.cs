@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -10,7 +9,7 @@ namespace DavidDylan.AdventOfCode2022
    public static class DaySeventeen
    {
       private const string ExampleInput = ">>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>";
-      private const string InputFilePath = @"D:\David\Coding\AdventOfCode2022\Input-Day17.txt";
+      private const string InputFilePath = "Input-Day17.txt";
       private const long PartTwoRockCount = 1000000000000L;
 
       public static void ReproduceProblemStatement()
@@ -35,6 +34,45 @@ namespace DavidDylan.AdventOfCode2022
          var timer = Stopwatch.StartNew();
          RockFall.Simulate(RealInput, PartTwoRockCount / 1_000_000L);
          Console.WriteLine("Estimate that solving part two will take {0} hours", timer.Elapsed.TotalSeconds * 1_000_000 / 60 / 60);
+      }
+      
+      public static void InvestigatePartTwo()
+      {
+         // First I did this, and observed a repeating pattern
+         //InvestigatePeriodicity(ExampleInput, ExampleInput.Length, 0L);
+         // Then I did this to confirm:
+         InvestigatePeriodicity(ExampleInput, 280L, PartTwoRockCount % 280L);
+      }
+      
+      public static void InvestigatePeriodicity(string input, long periodicity, long remainder)
+      {
+         long interimRockCount = periodicity * 4000L;
+         RockFall.SimulateVerbose(input, interimRockCount, periodicity, remainder);
+      }
+      
+      public static void SolvePartTwoExample()
+      {
+         long batchesOf280 = 1000000000000L / 280L;
+         // Values obtained by inspecting the output of InvestigatePeriodicityInExample:
+         long increaseInHeightPerBatch = 424L;
+         long heightAfter120 = 184L;
+         long answer = heightAfter120 + batchesOf280 * increaseInHeightPerBatch;
+         Console.WriteLine(answer);
+      }
+      
+      public static void SolvePartTwo()
+      {
+         long periodicity = RealInput.Length * RockFactory.TemplateCount;
+         long remainder = PartTwoRockCount % periodicity;
+         //InvestigatePeriodicity(RealInput, periodicity, remainder);
+         // By inspecting the results of the above, we get
+         long batchSize = 52839730L-35230935L;
+         remainder = PartTwoRockCount % batchSize;
+         long heightAfterRemainder = RockFall.Simulate(RealInput, remainder);
+         long increaseInHeightPerBatch = RockFall.Simulate(RealInput, remainder + batchSize) - heightAfterRemainder;
+         long numberOfBatches = PartTwoRockCount / batchSize;
+         long answer = heightAfterRemainder + numberOfBatches * increaseInHeightPerBatch;
+         Console.WriteLine(answer);
       }
    }
 
@@ -342,6 +380,24 @@ namespace DavidDylan.AdventOfCode2022
          for (int h = 0; h < rock.Outline.Length; h++)
             result[h+rock.Height-mPurgedRowCount] = WithRock(result[h+rock.Height-mPurgedRowCount], rock.Outline[h]); 
          return string.Join(Environment.NewLine, result.Reverse());
+      }
+      
+      public string GetSurfaceHash()
+      {
+         var highestRowToInclude = (int)(TopOfTower - mPurgedRowCount);
+         var lowestRowToInclude = highestRowToInclude;
+         var blocked = EmptyRow;
+         while (blocked != FullRow && lowestRowToInclude >= 0)
+         {
+            blocked |= mLiveContent[lowestRowToInclude];
+            lowestRowToInclude--;
+         }
+         StringBuilder result = new StringBuilder();
+         for (int h = highestRowToInclude; h >= lowestRowToInclude; h--)
+         {
+            result.Append(mLiveContent[h].ToString("X3"));
+         }
+         return result.ToString();
       }
    }
 }
