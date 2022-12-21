@@ -123,11 +123,12 @@ namespace DavidDylan.AdventOfCode2022
 
       public void Move(long length)
       {
-         // after length moves, the element will be back where it started
-         // except that we remove the element before working out where to move it to
-         // so while we're searching, there are length-1 elements
          var sign = Math.Sign(Value);
          var moveCount = Math.Abs(Value);
+
+         // after passing each of the other (length - 1) elements,
+         // this element will be back in its original position
+         // so the final position is only affected by the remainder
          long truncatedMoveCount = moveCount % (length - 1L);
          if (truncatedMoveCount == 0L)
             return;
