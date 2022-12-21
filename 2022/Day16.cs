@@ -4,8 +4,18 @@ using System.Linq;
 
 namespace DavidDylan.AdventOfCode2022
 {
-   public static class DaySixteenPartTwo
+   public static class DaySixteen
    {
+      public static void SolveExample()
+      {
+         FindMaxRelease(MapBuilder.BuildExampleMap(), 30);
+      }
+      
+      public static void SolvePartOne()
+      {
+         FindMaxRelease(MapBuilder.BuildRealMap(), 30);
+      }
+      
       public static void SolvePartTwoExample()
       {
          FindMaxReleaseWithTwo(MapBuilder.BuildExampleMap(), 26);
@@ -98,6 +108,66 @@ namespace DavidDylan.AdventOfCode2022
          var minAcceptablePayoff = bestPayoff - upperBoundOnAvailablePayoff;
          return distinctPaths.Where(p => p.Payoff >= minAcceptablePayoff).ToList(); 
       }
+      
+      public static void FindMaxRelease(Map map, int minutes)
+      {
+         var worklist = new List<Path>();
+         worklist.Add(new Path(new StartAt(map.StartLocation)));
+         for (int t = 1; t <= minutes; t++)
+         {
+            Console.WriteLine("t={0}. Starting with {1} path(s)", t, worklist.Count);
+            var possiblePaths = new List<Path>();
+            foreach (var path in worklist)
+            {
+               if (path.Location.Valve != null && !path.OpenedValves.IsOpen(path.Location.Valve))
+               {
+                  possiblePaths.Add(path.AndOpenValve(minutes - t));
+               }
+               
+               Location locationToAvoid = null;
+               if (path.LastStep is MoveTo)
+               {
+                  locationToAvoid = path.Steps[path.Steps.Length - 2].Location;
+               }
+               foreach (var nextLocation in path.LastStep.Location.TunnelsTo.Where(loc => loc != locationToAvoid))
+               {
+                  possiblePaths.Add(path.AndMoveTo(nextLocation));
+               }
+            }            
+            var shortlistingTimer = Stopwatch.StartNew();
+            worklist = ShortlistPossiblePaths(possiblePaths);
+            shortlistingTimer.Stop();
+            var shortlistingDelta = possiblePaths.Count - worklist.Count;
+            Console.WriteLine($"   Shortlisting removed {shortlistingDelta} paths in {shortlistingTimer.Elapsed}");
+            Console.WriteLine($"   Payoffs range from {possiblePaths.Max(p => p.Payoff)} down to {possiblePaths.Min(p => p.Payoff)}.");
+         }
+         Console.WriteLine(worklist.Max(p => p.Payoff));
+      }
+      
+      private static List<Path> ShortlistPossiblePaths(List<Path> longlist)
+      {
+         // Many of the paths in longlist have reached the same location and opened the same valves.
+         // Some of these may share the maximum payoff. As far as the future search goes, these are
+         // all equivalent and we only need to keep one.
+         var result = new List<Path>();
+         var timer = Stopwatch.StartNew();
+         foreach (var group in longlist.GroupBy(p => p.OpenedValves.Key))
+         {
+            foreach (var innerGroup in group.GroupBy(p => p.Location))
+            {
+               Path pathWithBestPayoffSoFar = innerGroup.First();
+               foreach (var item in innerGroup)
+               {
+                  if (item.Payoff > pathWithBestPayoffSoFar.Payoff)
+                  {
+                     pathWithBestPayoffSoFar = item;
+                  }
+               }
+               result.Add(pathWithBestPayoffSoFar);
+            }
+         }
+         return result;
+      }
    }
 
    public class TwinPath
@@ -175,6 +245,49 @@ namespace DavidDylan.AdventOfCode2022
          Array.Copy(EleSteps, resultSteps, EleSteps.Length);
          resultSteps[EleSteps.Length] = new MoveTo(newLocation);
          return new TwinPath(MySteps, resultSteps, Payoff, OpenedValves);
+      }
+   }
+
+   public class Path
+   {
+      public readonly Step[] Steps;
+      public readonly int Payoff;
+      public readonly OpenedValves OpenedValves;
+      public readonly Step LastStep;
+      public Location Location => LastStep.Location;
+      
+      public Path(StartAt startStep)
+      {
+         Steps = new Step[] { startStep };
+         LastStep = startStep;
+         Payoff = 0;
+         OpenedValves = OpenedValves.AllClosed;
+      }
+      
+      private Path(Step[] steps, int payoff, OpenedValves openedValves)
+      {
+         Steps = steps;
+         LastStep = steps.Last();
+         Payoff = payoff;
+         OpenedValves = openedValves;
+      }
+      
+      public Path AndOpenValve(int timeRemaining)
+      {
+         var currentLocation = Location;
+         var resultPayoff = Payoff + currentLocation.Valve.PayoffForOpening(timeRemaining);
+         var resultSteps = new Step[Steps.Length + 1];
+         Array.Copy(Steps, resultSteps, Steps.Length);
+         resultSteps[Steps.Length] = new OpenValve(currentLocation);
+         return new Path(resultSteps, resultPayoff, OpenedValves.WithValveOpen(currentLocation.Valve));
+      }
+      
+      public Path AndMoveTo(Location newLocation)
+      {
+         var resultSteps = new Step[Steps.Length + 1];
+         Array.Copy(Steps, resultSteps, Steps.Length);
+         resultSteps[Steps.Length] = new MoveTo(newLocation);
+         return new Path(resultSteps, Payoff, OpenedValves);
       }
    }
 
