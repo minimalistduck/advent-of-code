@@ -9,7 +9,7 @@ namespace DavidDylan.AdventOfCode2022
 {
    public static class DayNineteen
    {
-      public const string InputFilePath = @"D:\David\Coding\AdventOfCode2022\Input-Day19.txt";
+      public const string InputFilePath = "Input-Day19.txt";
       
       public static Blueprint[] ExampleBlueprints
       {
@@ -21,6 +21,21 @@ namespace DavidDylan.AdventOfCode2022
             };
          }
       }
+      
+      public static Blueprint[] RealBlueprints
+      {
+         get
+         {
+            List<Blueprint> blueprints = new List<Blueprint>();
+            foreach (var line in File.ReadAllLines(InputFilePath))
+            {
+               blueprints.Add(new Blueprint(
+                  Regex.Matches(line, @"\d+").Select(m => int.Parse(m.Groups[0].Value)).ToArray()
+               ));
+            }
+            return blueprints.ToArray();
+         }
+      }
 
       public static void SolvePartOneExample()
       {
@@ -29,14 +44,27 @@ namespace DavidDylan.AdventOfCode2022
       
       public static void SolvePartOne()
       {
-         List<Blueprint> blueprints = new List<Blueprint>();
-         foreach (var line in File.ReadAllLines(InputFilePath))
+         Console.WriteLine(SumQualityLevels(24, RealBlueprints));
+      }
+      
+      public static void SolvePartTwoExample()
+      {
+         Console.WriteLine(ProductOfCrackedGeodes(32, ExampleBlueprints));
+      }
+      
+      public static void SolvePartTwo()
+      {
+         Console.WriteLine(ProductOfCrackedGeodes(32, RealBlueprints.Take(3).ToArray()));
+      }
+      
+      public static int ProductOfCrackedGeodes(int minutes, params Blueprint[] blueprints)
+      {
+         var result = 1;
+         foreach (var blueprint in blueprints)
          {
-            blueprints.Add(new Blueprint(
-               Regex.Matches(line, @"\d+").Select(m => int.Parse(m.Groups[0].Value)).ToArray()
-            ));
+            result *= FindMaxCrackedGeodes(minutes, blueprint);
          }
-         Console.WriteLine(SumQualityLevels(24, blueprints.ToArray()));
+         return result;
       }
       
       public static int SumQualityLevels(int minutes, params Blueprint[] blueprints)
@@ -61,9 +89,16 @@ namespace DavidDylan.AdventOfCode2022
                   optionsAfter[nextOption.ToString()] = nextOption;  // deliberately overwriting equivalent options
                }
             }
+            // This part gets me to the correct answer, but I only know it's correct because
+            // I submitted it and got a star. It takes too long to do an exhaustive search,
+            // but I offer no proof that these shortcuts guarantee a correct answer in general.
             var maxCrackers = optionsAfter.Values.Max(opt => opt.GeodeCrackerCount);
-            // I'm guessing that any options where we have fewer than the maximum geode-crackers can be eliminated
-            stockOptions = optionsAfter.Values.Where(opt => opt.GeodeCrackerCount == maxCrackers).ToList();
+            stockOptions = optionsAfter.Values.Where(opt => 
+               // we don't need more ore-miners than we can use the ore from
+               opt.OreMinerCount <= blueprint.MaxOrePerMinute &&
+               // and we can drop any options that have fallen far behind the front-runners
+               opt.GeodeCrackerCount >= maxCrackers - 1
+            ).ToList();
             if (stockOptions.Count > 100_000)
                Console.WriteLine("   Exploring {0} distinct options after {1} minute(s)", stockOptions.Count, t);
             //var maxGeodesCrackedSoFar = stockOptions.Max(opt => opt.GeodesCracked);
@@ -124,6 +159,7 @@ namespace DavidDylan.AdventOfCode2022
    public class Blueprint : List<ActionType>
    {
       public readonly int Id;
+      public readonly int MaxOrePerMinute;
       
       public Blueprint(int id)
          : base()
@@ -139,6 +175,7 @@ namespace DavidDylan.AdventOfCode2022
          Add(new ActionType(RobotType.ClayHarvester, oreUsed: data[2]));
          Add(new ActionType(RobotType.ObsidianCollector, oreUsed: data[3], clayUsed: data[4]));
          Add(new ActionType(RobotType.GeodeCracker, oreUsed: data[5], obsidianUsed: data[6]));
+         MaxOrePerMinute = new [] { data[1], data[2], data[3], data[5] }.Max();
       }
    }
 
@@ -149,6 +186,7 @@ namespace DavidDylan.AdventOfCode2022
       public readonly int Obsidian;
       public readonly int GeodesCracked;
       public readonly RobotType[] Robots;
+      public readonly int OreMinerCount;
       public readonly int GeodeCrackerCount;
       
       public Stock(int ore, int clay, int obsidian, int geodesCracked, IEnumerable<RobotType> robots)
@@ -158,6 +196,7 @@ namespace DavidDylan.AdventOfCode2022
          Obsidian = obsidian;
          GeodesCracked = geodesCracked;
          Robots = robots.ToArray();
+         OreMinerCount = Robots.Where(r => r == RobotType.OreMiner).Count();
          GeodeCrackerCount = Robots.Where(r => r == RobotType.GeodeCracker).Count();
       }
       
