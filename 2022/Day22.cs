@@ -27,7 +27,7 @@ namespace DavidDylan.AdventOfCode2022
       {
          get
          {
-            return File.ReadAllLines(@"D:\David\Coding\AdventOfCode2022\Input-Day22-Board.txt");
+            return File.ReadAllLines("Input-Day22-Board.txt");
          }
       }
       
@@ -35,7 +35,7 @@ namespace DavidDylan.AdventOfCode2022
       {
          get
          {
-            return File.ReadAllText(@"D:\David\Coding\AdventOfCode2022\Input-Day22-Route.txt");
+            return File.ReadAllText("Input-Day22-Route.txt");
          }
       }
       
