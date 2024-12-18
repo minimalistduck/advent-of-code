@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>DavidDylan.AdventOfCode2024</AssemblyName>
+    <RootNamespace>DavidDylan.AdventOfCode2024</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateProgramFile>false</GenerateProgramFile>
+  </PropertyGroup>
+</Project>
