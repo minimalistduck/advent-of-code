@@ -12,6 +12,9 @@ public static class Day11Program
 {
   public static void Main()
   {
+    const string input = "337 42493 1891760 351136 2 6932 73 0";
+    var initialStones = input.Split(" ").Select(n => new Stone(n)).ToArray();
+    
     var oldBag = new StoneBag();
     oldBag.AddRange(initialStones);
     for (int i = 0; i < blinkCount; i++)
@@ -27,6 +30,72 @@ public static class Day11Program
       oldBag = nextBag;
     }
   }
+}
+
+public class Stone
+{
+   public static IStoneFactory _factory = new SimpleStoneFactory();
+   private readonly string _label;
+   private readonly long _number;
+   
+   public Stone(string label)
+   {
+      _label = label;
+      _number = long.Parse(label);
+   }
+   
+   public Stone(long number)
+   {
+      _label = number.ToString();
+      _number = number;
+   }
+   
+   public string Label => _label;
+   
+   public Stone[] Blink()
+   {
+      foreach (var rule in Rules)
+      {
+         var possibleResult = rule(this);
+         if (possibleResult != null)
+         {
+            return possibleResult;
+         }
+      }
+      throw new InvalidOperationException("None of the rules applied to this stone.");
+   }
+   
+   private static Func<Stone, Stone[]>[] Rules = new Func<Stone, Stone[]>[] {
+      ZeroToOne,
+      SplitIfEven,
+      Multiply
+   };
+   
+   private static Stone[] ZeroToOne(Stone originalStone)
+   {
+      if (originalStone._number == 0L)
+      {
+         return new Stone[] { _factory.Get("1") };
+      }
+      return null;
+   }
+   
+   private static Stone[] SplitIfEven(Stone originalStone)
+   {
+      var len = originalStone._label.Length;
+      if (len % 2 == 0)
+      {
+         var partOne = originalStone._label.Substring(0, len / 2);
+         var partTwo = long.Parse(originalStone._label.Substring(len / 2));
+         return new Stone[] { _factory.Get(partOne), _factory.Get(partTwo) };
+      }
+      return null;
+   }
+   
+   private static Stone[] Multiply(Stone originalStone)
+   {
+      return new Stone[] { _factory.Get(originalStone._number * 2024L) };
+   }
 }
 
 public class StoneBag
