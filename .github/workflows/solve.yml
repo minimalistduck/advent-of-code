@@ -7,14 +7,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
       - run: |
-          cd 2022
-          python -m day13
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Updated by a GitHub Action
-          commit_options: '--no-verify --signoff'
-          file_pattern: 2022/*.*
-          add_options: '-A'
-          skip_fetch: true
+          .\Runner\Invoke-Solution.ps1
+        shell: powershell
