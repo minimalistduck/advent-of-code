@@ -12,6 +12,7 @@ public static class Day11Program
 {
   public static void Main()
   {
+    const int blinkCount = 25;
     const string input = "337 42493 1891760 351136 2 6932 73 0";
     var initialStones = input.Split(" ").Select(n => new Stone(n)).ToArray();
     
@@ -29,6 +30,13 @@ public static class Day11Program
       }
       oldBag = nextBag;
     }
+
+    var result = 0L;
+    foreach (var kvp in oldBag.Entries)
+    {
+      result += kvp.Value;
+    }
+    Console.WriteLine("After {0} blinks, have {1} stones", blinkCount, result);
   }
 }
 
