@@ -34,7 +34,6 @@ public static class Day11Program
 
 public class Stone
 {
-   public static IStoneFactory _factory = new SimpleStoneFactory();
    private readonly string _label;
    private readonly long _number;
    
@@ -75,7 +74,7 @@ public class Stone
    {
       if (originalStone._number == 0L)
       {
-         return new Stone[] { _factory.Get("1") };
+         return new Stone[] { new Stone("1") };
       }
       return null;
    }
@@ -87,14 +86,14 @@ public class Stone
       {
          var partOne = originalStone._label.Substring(0, len / 2);
          var partTwo = long.Parse(originalStone._label.Substring(len / 2));
-         return new Stone[] { _factory.Get(partOne), _factory.Get(partTwo) };
+         return new Stone[] { new Stone(partOne), new Stone(partTwo) };
       }
       return null;
    }
    
    private static Stone[] Multiply(Stone originalStone)
    {
-      return new Stone[] { _factory.Get(originalStone._number * 2024L) };
+      return new Stone[] { new Stone(originalStone._number * 2024L) };
    }
 }
 
