@@ -111,7 +111,7 @@ public class StoneBag
   
   public void Add(Stone stone, long count)
   {
-    var oldValue;
+    long oldValue;
     _entries.TryGetValue(stone.Label, out oldValue);
     _entries[stone.Label] = oldValue + count;
   }
@@ -125,5 +125,5 @@ public class StoneBag
   }
   
   public IEnumerable<KeyValuePair<Stone, long>> Entries =>
-    _entries.Select(kvp => new KeyValuePair(new Stone(kvp.Key), kvp.Value));
+    _entries.Select(kvp => new KeyValuePair<Stone, long>(new Stone(kvp.Key), kvp.Value));
 }
