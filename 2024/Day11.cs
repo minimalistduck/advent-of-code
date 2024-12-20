@@ -12,7 +12,7 @@ public static class Day11Program
 {
   public static void Main()
   {
-    const int blinkCount = 40;
+    const int blinkCount = 75;
     const string input = "337 42493 1891760 351136 2 6932 73 0";
     var initialStones = input.Split(" ").Select(n => new Stone(n)).ToArray();
     
