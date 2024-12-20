@@ -7,4 +7,6 @@ Copy-Item $sourceFile $PSScriptRoot
 #$SourceFile = Join-Path $IdeCodingPath "Day$($Day)-Old.cs"
 #Copy-Item $SourceFile $PSScriptRoot
 
+Push-Location $PSScriptRoot
 dotnet run RunMe.csproj -- $ideCodingPath
+Pop-Location
