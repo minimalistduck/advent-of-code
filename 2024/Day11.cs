@@ -12,12 +12,14 @@ public static class Day11Program
 {
   public static void Main()
   {
-    const int blinkCount = 25;
+    const int blinkCount = 40;
     const string input = "337 42493 1891760 351136 2 6932 73 0";
     var initialStones = input.Split(" ").Select(n => new Stone(n)).ToArray();
     
     var oldBag = new StoneBag();
     oldBag.AddRange(initialStones);
+
+    var timer = Stopwatch.StartNew();
     for (int i = 0; i < blinkCount; i++)
     {
       var nextBag = new StoneBag();
@@ -30,6 +32,7 @@ public static class Day11Program
       }
       oldBag = nextBag;
     }
+    Console.WriteLine("Took {0} to do {1} blinks", timer.Elapsed, blinkCount);
 
     var result = 0L;
     foreach (var kvp in oldBag.Entries)
