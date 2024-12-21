@@ -21,6 +21,26 @@ public static class Day17Program
     SolvePartTwo();
   }
 
+  public static void SolvePartTwo()
+  {
+    const int minToTry = 200;
+    const int maxToTry = 120000;
+    var timer = Stopwatch.StartNew();
+    for (int a = minToTry; a <= maxToTry; a++)
+    {
+      var computer = InitialiseComputer(a);
+
+      computer.Executor.ExpectOutput(SourceCode);
+    
+      if (computer.Run())
+      {
+        Console.WriteLine("Solved in {0}", timer.Elapsed);
+        Console.WriteLine("Output matched expected when initial value in register A was {0}", a);
+      }
+    }
+    Console.WriteLine("Spent {0} looking for solutions up to {1} but found nothing.", timer.Elapsed, maxToTry);
+  }
+
   public static void SolvePartOne(int registerAValue)
   {
     var computer = InitialiseComputer(registerAValue);
@@ -41,25 +61,6 @@ public static class Day17Program
     }
 
     return computer;
-  }
-
-  public static void SolvePartTwo()
-  {
-    const int maxToTry = 200;
-    var timer = Stopwatch.StartNew();
-    for (int a = 0; a <= maxToTry; a++)
-    {
-      var computer = InitialiseComputer(a);
-
-      computer.Executor.ExpectOutput(SourceCode);
-    
-      if (computer.Run())
-      {
-        Console.WriteLine("Solved in {0}", timer.Elapsed);
-        Console.WriteLine("Output matched expected when initial value in register A was {0}", a);
-      }
-    }
-    Console.WriteLine("Spent {0} looking for solutions up to {1} but found nothing.", timer.Elapsed, maxToTry);
   }
 }
 
