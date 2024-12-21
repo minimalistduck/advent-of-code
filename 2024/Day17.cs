@@ -16,7 +16,8 @@ public static class Day17Program
   {
     const int partOneRegisterA = 64196994;
 
-    SolvePartOne(partOneRegisterA);
+    //SolvePartOne(partOneRegisterA);
+    SolvePartTwo();
   }
 
   public static void SolvePartOne(int registerAValue)
