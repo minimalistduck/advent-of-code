@@ -12,8 +12,8 @@ public static class Day12Program
 {
   public static void Main(string[] args)
   {
-     //var lines = LoadInput();
-     var lines = Example();
+     var lines = LoadInput(args[0]);
+     //var lines = Example();
      var width = lines[0].Length;
      var height = lines.Length;
      
@@ -80,9 +80,8 @@ public static class Day12Program
      // 770241 is too low
   }
 
-  public static string[] LoadInput()
+  public static string[] LoadInput(string folder)
   {
-     const string folder = @"D:\David\Coding\AdventOfCode2024\Day12";
      string inputPath = Path.Combine(folder, "input.txt");
      return File.ReadAllLines(inputPath).ToArray();
   }
