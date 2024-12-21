@@ -33,7 +33,7 @@ public static class Day17Program
     var computer = new Computer();
     computer.SetA(registerAValue);
     
-    for (int i = 0; i < sourceCode.Length; i += 2)
+    for (int i = 0; i < SourceCode.Length; i += 2)
     {
       computer.AppendInstruction(SourceCode[i], SourceCode[i+1]);
     }
@@ -117,7 +117,7 @@ public class Computer
       Executor.InstructionPointer++;
       isValid = Executor.IsValid();
     }
-    return isValiid;
+    return isValid;
   }
 }
 
