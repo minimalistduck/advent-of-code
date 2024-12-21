@@ -168,7 +168,7 @@ public class Region
       bool lastHasEdge = false;
       for (int y = 0; y < yRange; y++)
       {
-        var edgeDirectionsForRow = new int[] { 1, 3 };
+        var edgeDirectionsForRow = new int[] { 0, 2 };
       	foreach (int d in edgeDirectionsForRow)
       	{
       	  lastHasEdge = false;
@@ -185,7 +185,7 @@ public class Region
       
       for (int x = 0; x < xRange; x++)
       {
-     		var edgeDirectionsForColumn = new int[] { 0, 2 };
+     		var edgeDirectionsForColumn = new int[] { 1, 3 };
     		foreach (var d in edgeDirectionsForColumn)
      		{
         	lastHasEdge = false;
