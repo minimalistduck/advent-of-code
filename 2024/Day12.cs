@@ -168,13 +168,12 @@ public class Region
       bool lastHasEdge = false;
       for (int y = 0; y < yRange; y++)
       {
-        // TODO iterate d outside x loop
-      	lastHasEdge = false;
-      	for (int x = 0; x < xRange; x++)
+        var edgeDirectionsForRow = new int[] { 1, 3 };
+      	foreach (int d in edgeDirectionsForRow)
       	{
-      		var edgeDirectionsForRow = new int[] { 1, 3 };
-      		foreach (int d in edgeDirectionsForRow)
-      		{
+      	  lastHasEdge = false;
+      	  for (int x = 0; x < xRange; x++)
+      	  {
       			if (hasEdge[x,y,d] && !lastHasEdge)
       			{
       				result++;
@@ -186,12 +185,12 @@ public class Region
       
       for (int x = 0; x < xRange; x++)
       {
-      	lastHasEdge = false;
-      	for (int y = 0; y < yRange; y++)
-      	{
-      		var edgeDirectionsForColumn = new int[] { 0, 2 };
-      		foreach (var d in edgeDirectionsForColumn)
-      		{
+     		var edgeDirectionsForColumn = new int[] { 0, 2 };
+    		foreach (var d in edgeDirectionsForColumn)
+     		{
+        	lastHasEdge = false;
+        	for (int y = 0; y < yRange; y++)
+        	{
       			if (hasEdge[x,y,d] && !lastHasEdge)
       			{
       				result++;
