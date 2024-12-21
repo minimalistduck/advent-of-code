@@ -207,7 +207,10 @@ public class Region
    
    public int CalculateDiscountedPrice()
    {
-      return CountEdges() * Area;
+     var edges = CountEdges();
+     Console.WriteLine("Region of {0} with {1} edges and area {2}", 
+                      _regionLetter, edges, Area);
+      return edges * Area;
    }
 }
 
