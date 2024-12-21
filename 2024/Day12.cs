@@ -12,11 +12,7 @@ public static class Day12Program
 {
   public static void Main(string[] args)
   {
-    foreach (string arg in args)
-    {
-      Console.WriteLine(arg);
-    }
-     var lines = LoadInput(args[0]);
+     var lines = LoadInput(args[1]);
      //var lines = Example();
      var width = lines[0].Length;
      var height = lines.Length;
