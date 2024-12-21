@@ -150,9 +150,6 @@ public class Region
       var maxX = _points.Max(p => p.X);
       var maxY = _points.Max(p => p.Y);
       
-      var xOffset = minX - 1;
-      var yOffset = minY - 1;
-      
       var xRange = maxX - minX + 1;
       var yRange = maxY - minY + 1;
       
@@ -171,6 +168,7 @@ public class Region
       bool lastHasEdge = false;
       for (int y = 0; y < yRange; y++)
       {
+        // TODO iterate d outside x loop
       	lastHasEdge = false;
       	for (int x = 0; x < xRange; x++)
       	{
