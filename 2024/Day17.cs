@@ -105,17 +105,19 @@ public class Computer
     _operands.Add(instruction.CreateOperand(operand, _registers));
   }
   
-  public void Run()
+  public bool Run()
   {
-    // TODO: Return a bool, based on Executor.IsValid()
-    while (Executor.InstructionPointer >= 0 && Executor.InstructionPointer < _instructions.Count)
+    var isValid = true;
+    while (isValid && Executor.InstructionPointer >= 0 && Executor.InstructionPointer < _instructions.Count)
     {
       _instructions[Executor.InstructionPointer].Execute(
         _registers,
         _operands[Executor.InstructionPointer],
         Executor);
       Executor.InstructionPointer++;
+      isValid = Executor.IsValid();
     }
+    return isValiid;
   }
 }
 
