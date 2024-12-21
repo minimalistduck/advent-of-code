@@ -151,78 +151,59 @@ public class Region
       var maxY = _points.Max(p => p.Y);
       
       var xOffset = minX - 1;
-      var xRange = (maxX - minX) + 3; // +1 for self, +1 for each extremity
-      
       var yOffset = minY - 1;
-      var yRange = (maxY - minY) + 3;
       
-      List<char[]> outline = new List<char[]>();
-      for (int y = 0; y < yRange; y++)
-      {
-         outline.Add(
-            new string('.', xRange).ToCharArray()
-         );
-      }
+      var xRange = maxX - minX + 1
+      var yRange = maxY - minY + 1
       
+      bool[,,] hasEdge = new bool[xRange,yRange,4];
       foreach (var p in _points)
       {
-         foreach (var d in Direction.All)
-         {
-            var adjacent = p;
-            adjacent.Offset(d.Offset);
-            if (!_points.Contains(adjacent))
-            {
-               var existingSymbol = outline[adjacent.Y - yOffset][adjacent.X - xOffset];
-               var newSymbol = existingSymbol == '.' ? d.EdgeSymbol : '+';
-               outline[adjacent.Y - yOffset][adjacent.X - xOffset] = newSymbol;
-            }
-         }
+      	for (var d=0; d < Direction.All.Length; d++)
+      	{
+      		var adjacent = p;
+      		adjacent.Offset(Direction.All[d].Offset);
+      		hasEdge[p.X-minX,p.Y-minY,d] = !_points.Contains(adjacent);
+      	}
       }
-      
-      if (DebugAll || _regionLetter == DebugLetter)
-      {
-         foreach (var line in outline)
-         {
-            Console.WriteLine(new string(line));
-         }
-      }
-      
+  
       int result = 0;
-      char lastChar = '.';
+      bool lastHasEdge = false;
       for (int y = 0; y < yRange; y++)
       {
-         for (int x = 0; x < xRange; x++)
-         {
-            if (lastChar == '.' && (outline[y][x] == '-' || outline[y][x] == '+'))
-            {
-               // start of new horizontal edge
-               result++;
-            }
-            lastChar = outline[y][x];
-         }
+      	lastHasEdge = false;
+      	for (int x = 0; x < xRange; x++)
+      	{
+      		var edgeDirectionsForRow = new int[] { 1, 3 };
+      		foreach (int d in edgeDirectionsForRow)
+      		{
+      			if (hasEdge[x,y,d] && !lastHashEdge)
+      			{
+      				result++;
+      			}
+      			lastHasEdge = hasEdge[x,y,d];
+      		}
+      	}
       }
       
-      lastChar = '.';
       for (int x = 0; x < xRange; x++)
       {
-         for (int y = 0; y < yRange; y++)
-         {
-            if (lastChar == '.' && (outline[y][x] == '|' || outline[y][x] == '+'))
-            {
-               // start of new vertical edge
-               result++;
-            }
-            lastChar = outline[y][x];
-         }
+      	lastHasEdge = false;
+      	for (int y = 0; y < yRange; y++)
+      	{
+      		var edgeDirectionsForColumn = new int[] { 0, 2 };
+      		foreach (var d in edgeDirectionsForColumn)
+      		{
+      			if (hasEdge[x,y,d] && !lastHasEdge)
+      			{
+      				result++;
+      			}
+      			lastHasEdge = hasEdge[x,y,d];
+      		}
+      	}
       }
-      
-      if (DebugAll || _regionLetter == DebugLetter)
-      {
-         Console.WriteLine("Region {1} has {0} edges", result, _regionLetter);
-      }
-      
       return result;
-   }
+    }
    
    public int CalculateDiscountedPrice()
    {
