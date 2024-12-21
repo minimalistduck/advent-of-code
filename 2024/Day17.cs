@@ -23,8 +23,8 @@ public static class Day17Program
 
   public static void SolvePartTwo()
   {
-    const int minToTry = 120000;
-    const int maxToTry = 2500000;
+    const int minToTry = 2500000;
+    const int maxToTry = int.MaxValue;
     var timer = Stopwatch.StartNew();
     for (int a = minToTry; a <= maxToTry; a++)
     {
