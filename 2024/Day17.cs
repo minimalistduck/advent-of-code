@@ -17,6 +17,7 @@ public static class Day17Program
     const int partOneRegisterA = 64196994;
 
     //SolvePartOne(partOneRegisterA);
+    // 6 is not the right answer
     SolvePartTwo();
   }
 
@@ -118,7 +119,7 @@ public class Computer
       Executor.InstructionPointer++;
       isValid = Executor.IsValid();
     }
-    return isValid;
+    return Executor.IsComplete();
   }
 }
 
@@ -200,6 +201,14 @@ public class Executor
     
     return _output.Count <= _expectedOutput.Length &&
       _expectedOutput.Take(_output.Count).SequenceEqual(_output);
+  }
+
+  public bool IsComplete()
+  {
+    if (_expectedOutput == null)
+      return true; // supports part one
+    
+    return _expectedOutput.SequenceEqual(_output);
   }
   
   public override string ToString()
