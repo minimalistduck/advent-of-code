@@ -153,8 +153,8 @@ public class Region
       var xOffset = minX - 1;
       var yOffset = minY - 1;
       
-      var xRange = maxX - minX + 1
-      var yRange = maxY - minY + 1
+      var xRange = maxX - minX + 1;
+      var yRange = maxY - minY + 1;
       
       bool[,,] hasEdge = new bool[xRange,yRange,4];
       foreach (var p in _points)
