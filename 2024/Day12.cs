@@ -80,10 +80,9 @@ public static class Day12Program
      // 770241 is too low
   }
 
-  public static string[] LoadInput(string folder)
+  public static string[] LoadInput(string inputFilePath)
   {
-     string inputPath = Path.Combine(folder, "input.txt");
-     return File.ReadAllLines(inputPath).ToArray();
+     return File.ReadAllLines(inputFilePath).ToArray();
   }
 
   public static string[] Example()
