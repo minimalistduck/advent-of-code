@@ -23,8 +23,8 @@ public static class Day17Program
 
   public static void SolvePartTwo()
   {
-    const int minToTry = 200;
-    const int maxToTry = 120000;
+    const int minToTry = 120000;
+    const int maxToTry = 2500000;
     var timer = Stopwatch.StartNew();
     for (int a = minToTry; a <= maxToTry; a++)
     {
@@ -36,6 +36,7 @@ public static class Day17Program
       {
         Console.WriteLine("Solved in {0}", timer.Elapsed);
         Console.WriteLine("Output matched expected when initial value in register A was {0}", a);
+        return;
       }
     }
     Console.WriteLine("Spent {0} looking for solutions up to {1} but found nothing.", timer.Elapsed, maxToTry);
