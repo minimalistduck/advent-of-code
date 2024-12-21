@@ -8,5 +8,6 @@ Copy-Item $sourceFile $PSScriptRoot
 #Copy-Item $SourceFile $PSScriptRoot
 
 Push-Location $PSScriptRoot
-dotnet run RunMe.csproj -- $ideCodingPath
+$inputFilePath = Join-Path $ideCodingPath "Day$($day)-input.txt"
+dotnet run RunMe.csproj -- $inputFilePath
 Pop-Location
