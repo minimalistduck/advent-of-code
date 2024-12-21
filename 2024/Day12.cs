@@ -177,7 +177,7 @@ public class Region
       		var edgeDirectionsForRow = new int[] { 1, 3 };
       		foreach (int d in edgeDirectionsForRow)
       		{
-      			if (hasEdge[x,y,d] && !lastHashEdge)
+      			if (hasEdge[x,y,d] && !lastHasEdge)
       			{
       				result++;
       			}
