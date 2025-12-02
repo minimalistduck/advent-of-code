@@ -12,10 +12,23 @@ public static class DayTwoProgram
     var xStr = x.ToString();
     if ((xStr.Length) % 2 != 0)
       return false;
-    var halfLen = xStr.Length / 2;
-    var left = xStr.Substring(0,halfLen);
-    var right = xStr.Substring(halfLen,halfLen);
-    return left.Equals(right);
+    return IsFakeWhenSplitInto(xStr,2);
+  }
+
+  private static bool IsFakeWhenSplitInto(string xStr, int partCount)
+  {
+    var subLen = xStr.Length / partCount;
+    var parts = new List<string>();
+    for (var p = 0; p < partCount; p++)
+    {
+      parts.Add(xStr.Substring(p*subLen,subLen));
+    }
+    for (var p = 1; p < partCount; p++)
+    {
+      if (!parts[p-1].Equals(parts[p]))
+        return false;
+    }
+    return true;
   }
 
   private static void Solve(string[] items, Predicate<long> isFake)
