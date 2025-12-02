@@ -9,5 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Using Include="System.IO" />
+    <Using Include="System.Linq" />
   </ItemGroup>
 </Project>
