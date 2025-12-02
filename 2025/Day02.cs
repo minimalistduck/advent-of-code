@@ -9,12 +9,12 @@ public static class DayTwoProgram
 
   private static bool PartOne(long x)
   {
-    var iStr = i.ToString();
-    if ((iStr.Length) % 2 != 0)
+    var xStr = x.ToString();
+    if ((xStr.Length) % 2 != 0)
       return false;
-    var halfLen = iStr.Length / 2;
-    var left = iStr.Substring(0,halfLen);
-    var right = iStr.Substring(halfLen,halfLen);
+    var halfLen = xStr.Length / 2;
+    var left = xStr.Substring(0,halfLen);
+    var right = xStr.Substring(halfLen,halfLen);
     return left.Equals(right);
   }
 
