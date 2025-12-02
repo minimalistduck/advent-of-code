@@ -4,7 +4,20 @@ public static class DayTwoProgram
   {
     var input = File.ReadAllText(args[1]).TrimEnd();
 
-    Solve(input.Split(","), PartOne);
+    Solve(input.Split(","), PartTwo);
+  }
+
+  private static bool PartTwo(long x)
+  {
+    var xStr = x.ToString();
+    for (var i = 2; i <= xStr.Length; i++)
+    {
+      if ((xStr.Length) % i != 0)
+        continue;
+      if (IsFakeWhenSplitInto(xStr,i))
+        return true;
+    }
+    return false;
   }
 
   private static bool PartOne(long x)
