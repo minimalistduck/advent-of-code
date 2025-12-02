@@ -2,7 +2,7 @@ public static class DayOneProgram
 {
   public static void Main(string[] args)
   {
-    var lines = File.ReadAllLines(args[0]).ToArray();
+    var lines = File.ReadAllLines(args[1]).ToArray();
     var partOne = 0;
     var pointingAt = 50;
 
