@@ -4,12 +4,23 @@ public static class DayTwoProgram
   {
     var input = File.ReadAllText(args[1]).TrimEnd();
 
-    SolvePartOne(input.Split(","));
+    Solve(input.Split(","), PartOne);
   }
 
-  private static void SolvePartOne(string[] items)
+  private static bool PartOne(long x)
   {
-    var partOne = 0L;
+    var iStr = i.ToString();
+    if ((iStr.Length) % 2 != 0)
+      return false;
+    var halfLen = iStr.Length / 2;
+    var left = iStr.Substring(0,halfLen);
+    var right = iStr.Substring(halfLen,halfLen);
+    return left.Equals(right);
+  }
+
+  private static void Solve(string[] items, Predicate<long> isFake)
+  {
+    var answer = 0L;
 
     foreach (var item in items)
     {
@@ -19,24 +30,11 @@ public static class DayTwoProgram
 
       for (var i = low; i <= high; i++)
       {
-        var iStr = i.ToString();
-        if ((iStr.Length) % 2 != 0)
-          continue;
-        var halfLen = iStr.Length / 2;
-        var left = iStr.Substring(0,halfLen);
-        var right = iStr.Substring(halfLen,halfLen);
-        if (left.Equals(right))
-          partOne += i;
+        if (isFake(i))
+          answer += i;
       }
     }
     
-    Console.WriteLine(partOne);
-  }
-
-  private static void SolvePartTwo(string[] lines)
-  {
-    var partTwo = 0;
-
-    Console.WriteLine(partTwo);
+    Console.WriteLine(answer);
   }
 }
