@@ -14,28 +14,31 @@ public static class DayOneProgram
 
     foreach (var line in lines)
     {
-      var dirn = line[0] == 'R' ? 1 : -1;
+      var dirn = line[0];
       var distance = int.Parse(line.Substring(1,line.Length-1));
-      
-      while (distance >= 100)
-      {
-        distance -= 100;
-        partTwo++;
-      }
 
-      var offset = dirn * distance;
-      if (pointingAt + offset < 0)
+      if (dirn == 'R')
       {
-        offset += 100;
-        partTwo++;
+        pointingAt = pointingAt + distance;
+        while (pointingAt >= 100)
+        {
+          pointingAt -= 100;
+          partTwo++;
+        }
       }
-      if (pointingAt + offset >= 100)
+      else
       {
-        offset -= 100;
-        partTwo++;
+        pointingAt = pointingAt - distance;
+        while (pointingAt < 0)
+        {
+          pointingAt += 100;
+          partTwo++;
+        }
       }
-      
-      pointingAt += offset;
+      if (pointingAt == 0)
+      {
+        partTwo++;
+      }      
     }
 
     Console.WriteLine(partTwo);
