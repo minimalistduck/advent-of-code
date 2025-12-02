@@ -9,6 +9,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Using Include="System" />
+    <Using Include="System.Collections.Concurrent" />
+    <Using Include="System.Collections.Generic" />
     <Using Include="System.IO" />
     <Using Include="System.Linq" />
   </ItemGroup>
