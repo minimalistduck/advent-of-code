@@ -9,39 +9,20 @@ public static class DayOneProgram
 
   private static void SolvePartTwo(string[] lines)
   {
-    var partTwo = 0;
-    var pointingAt = 50;
-
+    var dial = new Dial();
+  
     foreach (var line in lines)
     {
       var dirn = line[0];
       var distance = int.Parse(line.Substring(1,line.Length-1));
 
-      if (dirn == 'R')
-      {
-        pointingAt = pointingAt + distance;
-        while (pointingAt >= 100)
-        {
-          pointingAt -= 100;
-          partTwo++;
-        }
-      }
+      if (dirn == 'L')
+        dial.MoveLeft(distance);
       else
-      {
-        pointingAt = pointingAt - distance;
-        while (pointingAt < 0)
-        {
-          pointingAt += 100;
-          partTwo++;
-        }
-      }
-      if (pointingAt == 0)
-      {
-        partTwo++;
-      }      
+        dial.MoveRight(distance);
     }
-
-    Console.WriteLine(partTwo);
+    
+    Console.WriteLine(dial.TimesPastZero);
   }
 
   private static void SolvePartOne(string[] lines)
@@ -62,4 +43,71 @@ public static class DayOneProgram
     }
     Console.WriteLine(partOne);
   }
+}
+
+public class LinkedPoint(string Label)
+{
+  public int VisitCount;
+  public LinkedPoint Left;
+  public LinkedPoint Right;
+}
+
+public class Dial
+{
+  private readonly LinkedPoint[] _points;
+  private LinkedPoint _current;
+  
+  public Dial()
+  {
+    _points = Build();
+    _current = points[0];
+  }
+  
+  public void MoveLeft(int distance)
+  {
+    for (var i = 0; i < distance; i++)
+    {
+      _current = _current.Left;
+      _current.VisitCount++;
+    }
+  }
+
+  public void MoveRight(int distance)
+  {
+    for (var i = 0; i < distance; i++)
+    {
+      _current = _current.Right;
+      _current.VisitCount++;
+    }
+  }
+  
+  public int TimesPastZero =>
+    _points.Single(p => p.Label.Equals("0")).VisitCount;
+
+    private static LinkedPoint[] Build()
+    {
+      var seq = Enumerable.Range(50,50).Concat(
+        Enumerable.Range(0,50)).ToArray();
+        
+      var resultBuilder = new List<LinkedPoint>();
+      
+      resultBuilder.Add(new LinkedPoint(seq[0].ToString()));
+      
+      foreach(var n in seq.Skip(1))
+      {
+        var prev = resultBuilder.Last();
+        var curr = new LinkedPoint(n.ToString());
+        prev.Right = curr;
+        curr.Left = prev;
+        resultBuilder.Add(curr);
+      }
+      
+      var end = resultBuilder.Last();
+      var start = resultBuilder.First();
+      end.Right = start;
+      start.Left = end;
+      
+      return resultBuilder.ToArray();
+    }
+
 }
