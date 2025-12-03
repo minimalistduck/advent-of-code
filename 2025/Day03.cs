@@ -13,7 +13,7 @@ public static class DayThreeProgram
 
     foreach (var line in lines)
     {
-      var pack = line.Select(d => (int)d - (int)'0');
+      var pack = line.Select(d => (int)d - (int)'0').ToArray();
       var firstIndex = PosOfMax(pack, 0, pack.Length - 2);
       var secondIndex = PosOfMax(pack, firstIndex + 1, pack.Length - 1);
       var packJoltage = pack[firstIndex]*10 + pack[secondIndex];
