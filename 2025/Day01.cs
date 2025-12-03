@@ -45,11 +45,12 @@ public static class DayOneProgram
   }
 }
 
-public class LinkedPoint(string Label)
+public class LinkedPoint(string label)
 {
   public int VisitCount;
   public LinkedPoint Left;
   public LinkedPoint Right;
+  public string Label => label;
 }
 
 public class Dial
@@ -60,7 +61,7 @@ public class Dial
   public Dial()
   {
     _points = Build();
-    _current = points[0];
+    _current = _points[0];
   }
   
   public void MoveLeft(int distance)
