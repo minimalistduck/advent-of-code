@@ -4,7 +4,7 @@ public static class DayThreeProgram
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
 
-    SolvePartOne(lines);
+    SolvePartTwo(lines);
   }
 
   private static void SolvePartOne(string[] lines)
@@ -40,8 +40,24 @@ public static class DayThreeProgram
 
   private static void SolvePartTwo(string[] lines)
   {
-    var partTwo = 0;
+    var partTwo = 0L;
 
+    foreach (var line in lines)
+    {
+      var pack = line.Select(d => (long)d - (long)'0').ToArray();
+      var packJoltage = 0L;
+      var indexes = new int[12];
+      indexes[0] = PosOfMax(pack, 0, pack.Length - indexes.Length);
+      for (int i = 1; i < indexes.Length; i++)
+      {
+        indexes[i] = PosOfMax(pack, indexes[i-1] + 1, pack.Length - indexes.Length + i);
+        packJoltage *= 10;
+        packJoltage += pack[indexes[i]];
+      }
+
+      partTwo += packJoltage;
+    }
+    
     Console.WriteLine(partTwo);
   }
 }
