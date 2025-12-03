@@ -4,6 +4,7 @@ public static class DayThreeProgram
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
 
+    // answer 14677317650774 is too low
     SolvePartTwo(lines);
   }
 
