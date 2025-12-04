@@ -25,7 +25,8 @@ public static class DayFourProgram
       grid[c,0] = '.';
       grid[c,height-1] = '.';
     }
-    
+
+    // 3618 is not right (too low?)
     SolvePartOne(grid, width, height);
   }
 
@@ -47,7 +48,7 @@ public static class DayFourProgram
             if (grid[x+xOffset[i],y+yOffset[i]] == '@')
               adjacentCount++;
           }
-          if (adjacentCount <= 4)
+          if (adjacentCount < 4)
             partOne++;
         }
       }
