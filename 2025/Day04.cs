@@ -47,9 +47,9 @@ public static class DayFourProgram
             if (grid[x+xOffset[i],y+yOffset[i]] == '@')
               adjacentCount++;
           }
+          if (adjacentCount <= 4)
+            partOne++;
         }
-        if (adjacentCount <= 4)
-          partOne++;
       }
     }
 
