@@ -44,9 +44,12 @@ public static class DayFourProgram
           var adjacentCount = 0;
           for (int i = 0; i < xOffset.Length; i++)
           {
-            // TODO: increment adjacentCount if bale found
+            if (grid[x+xOffset[i],y+yOffset[i]] == '@')
+              adjacentCount++;
           }
         }
+        if (adjacentCount <= 4)
+          partOne++;
       }
     }
 
