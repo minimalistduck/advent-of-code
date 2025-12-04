@@ -64,7 +64,7 @@ public static class DayFourProgram
         }
       }
       goOn = xOut.Any();
-      partTwp += xOut.Count;
+      partTwo += xOut.Count;
       for (int i = 0; i < xOut.Count; i++)
       {
         grid[xOut[i],yOut[i]] = '.';
