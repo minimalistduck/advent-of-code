@@ -26,8 +26,52 @@ public static class DayFourProgram
       grid[c,height-1] = '.';
     }
 
-    // 3618 is not right (too low?)
-    SolvePartOne(grid, width, height);
+    SolvePartTwo(grid, width, height);
+  }
+
+  private static void SolvePartTwo(char[,] grid, int width, int height)
+  {
+    var partTwo = 0;
+
+    var xOffset = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+    var yOffset = new int[] { -1,-1,-1,  0, 0,  1, 1, 1 };
+
+    var goOn = true;
+    while (goOn)
+    {
+      var xOut = new List<int>();
+      var yOut = new List<int>();
+      for (int x = 1; x < width - 1; x++)
+      {
+        for (int y = 1; y < height - 1; y++)
+        {
+          if (grid[x,y] == '@')
+          {
+            var adjacentCount = 0;
+            for (int i = 0; i < xOffset.Length; i++)
+            {
+              if (grid[x+xOffset[i],y+yOffset[i]] == '@')
+              {
+                adjacentCount++;
+              }
+            }
+            if (adjacentCount < 4)
+            {
+              xOut.Add(x);
+              yOut.Add(y);
+            }
+          }
+        }
+      }
+      goOn = xOut.Any();
+      partTwp += xOut.Count;
+      for (int i = 0; i < xOut.Count; i++)
+      {
+        grid[xOut[i],yOut[i]] = '.';
+      }
+    }
+
+    Console.WriteLine(partTwo);
   }
 
   private static void SolvePartOne(char[,] grid, int width, int height)
@@ -55,12 +99,5 @@ public static class DayFourProgram
     }
 
     Console.WriteLine(partOne);
-  }
-
-  private static void SolvePartTwo(string[] lines)
-  {
-    var partTwo = 0;
-
-    Console.WriteLine(partTwo);
   }
 }
