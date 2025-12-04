@@ -29,7 +29,7 @@ public static class DayFourProgram
     SolvePartOne(grid, width, height);
   }
 
-  private static void SolvePartOne(char[,] gift, int width, int height)
+  private static void SolvePartOne(char[,] grid, int width, int height)
   {
     var partOne = 0;
 
