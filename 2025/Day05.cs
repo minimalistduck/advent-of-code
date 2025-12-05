@@ -24,7 +24,8 @@ public static class DayFiveProgram
       ranges.Add(rangeLineParts.Select(long.Parse).ToArray());
     }
 
-    SolvePartOne(ingredients, ranges.ToArray());
+    //SolvePartOne(ingredients, ranges.ToArray());
+    SolvePartTwo(ranges.ToArray());
   }
 
   private static void SolvePartOne(List<Ingredient> ingredients, long[][] ranges)
@@ -43,9 +44,17 @@ public static class DayFiveProgram
     Console.WriteLine(ingredients.Count(ing => ing.IsFresh));
   }
 
-  private static void SolvePartTwo(string[] lines)
+  private static void SolvePartTwo(long[][] ranges)
   {
     var partTwo = 0;
+
+    int CompareRangesByStart(long[] first, long[] second)
+      => first[0].CompareTo(second[0]);
+    Array.Sort(ranges, CompareRangesByStart);
+
+    List<long[]> consolidatedRanges = new List<long[]>();
+
+    // TODO: populate with consolidated ranges
 
     Console.WriteLine(partTwo);
   }
