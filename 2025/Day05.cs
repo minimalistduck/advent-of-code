@@ -4,11 +4,6 @@ public static class DayFiveProgram
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
 
-    SolvePartOne(lines);
-  }
-
-  private static void SolvePartOne(string[] lines)
-  {
     var rangeLines = new List<string>();
     var ingredients = new List<Ingredient>();
     var i = 0;
@@ -22,11 +17,22 @@ public static class DayFiveProgram
       ingredients.Add(new Ingredient(long.Parse(lines[i])));
     }
 
+    var ranges = new List<long[]>(rangeLines.Length);
     foreach (var rangeLine in rangeLines)
     {
       var rangeLineParts = rangeLine.Split("-");
-      var rangeEnds = rangeLineParts.Select(long.Parse).ToArray();
+      ranges.Add(rangeLineParts.Select(long.Parse).ToArray());
+    }
 
+    SolvePartOne(ingredients, ranges);
+  }
+
+  private static void SolvePartOne(List<Ingredient> ingredients, long[][] ranges)
+  {
+    var rangeLines = new List<string>();
+
+    foreach (var rangeEnds in ranges)
+    {
       foreach (var ing in ingredients)
       {
         if (rangeEnds[0] <= ing.Id && ing.Id <= rangeEnds[1])
