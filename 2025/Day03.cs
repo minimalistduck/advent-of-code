@@ -49,7 +49,7 @@ public static class DayThreeProgram
       var pack = line.Select(d => (int)d - (int)'0').ToArray();
       var indexes = new int[12];
       indexes[0] = PosOfMax(pack, 0, pack.Length - indexes.Length);
-      var packJoltage = pack[indexes[0]];
+      var packJoltage = (long)pack[indexes[0]];
       for (int i = 1; i < indexes.Length; i++)
       {
         indexes[i] = PosOfMax(pack, indexes[i-1] + 1, pack.Length - indexes.Length + i);
