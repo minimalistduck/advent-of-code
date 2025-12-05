@@ -17,7 +17,7 @@ public static class DayFiveProgram
       ingredients.Add(new Ingredient(long.Parse(lines[i])));
     }
 
-    var ranges = new List<long[]>(rangeLines.Length);
+    var ranges = new List<long[]>(rangeLines.Count);
     foreach (var rangeLine in rangeLines)
     {
       var rangeLineParts = rangeLine.Split("-");
