@@ -24,7 +24,7 @@ public static class DayFiveProgram
       ranges.Add(rangeLineParts.Select(long.Parse).ToArray());
     }
 
-    SolvePartOne(ingredients, ranges);
+    SolvePartOne(ingredients, ranges.ToArray());
   }
 
   private static void SolvePartOne(List<Ingredient> ingredients, long[][] ranges)
