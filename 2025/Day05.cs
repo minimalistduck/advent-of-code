@@ -46,15 +46,34 @@ public static class DayFiveProgram
 
   private static void SolvePartTwo(long[][] ranges)
   {
-    var partTwo = 0;
+    var partTwo = 0L;
 
     int CompareRangesByStart(long[] first, long[] second)
       => first[0].CompareTo(second[0]);
     Array.Sort(ranges, CompareRangesByStart);
 
     List<long[]> consolidatedRanges = new List<long[]>();
-
-    // TODO: populate with consolidated ranges
+    var workingOn = ranges[0];
+    consolidatedRanges.Add(workingOn);
+    foreach (var range in ranges.Skip(1))
+    {
+      if (range[0] > workingOn[1] + 1) // there's an actual gap
+      {
+        // move on to this one
+        workingOn = range;
+        consolidatedRanges.Add(workingOn);
+      }
+      else
+      {
+        // align the end of the previous one
+        workingOn[1] = Math.Max(workingOn[1], range[1]);
+      }
+    }
+    
+    foreach (var range in consolidatedRanges)
+    {
+      partTwo += range[1] - range[0] + 1; // ranges are inclusive
+    }
 
     Console.WriteLine(partTwo);
   }
