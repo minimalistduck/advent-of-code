@@ -43,6 +43,7 @@ public static class DayThreeProgram
   {
     var partTwo = 0L;
 
+    var loopCount = 0;
     foreach (var line in lines)
     {
       var pack = line.Select(d => (int)d - (int)'0').ToArray();
@@ -57,6 +58,12 @@ public static class DayThreeProgram
       }
 
       partTwo += packJoltage;
+      loopCount++;
+
+      if (loopCount % 100 == 0)
+      {
+        Console.WriteLine($"Line {line} has max joltage {packJoltage}");
+      }
     }
     
     Console.WriteLine(partTwo);
