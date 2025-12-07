@@ -75,7 +75,7 @@ public static class DaySixProgram
     var spaceIndexes = spaceIndexSet.ToArray();
     Array.Sort(spaceIndexes);
     Console.WriteLine("Columns where there's a space in all rows:");
-    Console.WriteLine(spaceIndexes.Join(","));
+    Console.WriteLine(string.Join(spaceIndexes,","));
 
     var operations = lines.Last().Split(" ", StringSplitOptions.RemoveEmptyEntries);
     var funcs = operations.Select<string,Func<long,long,long>>(op => op switch
