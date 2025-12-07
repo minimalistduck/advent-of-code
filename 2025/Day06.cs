@@ -49,7 +49,7 @@ public static class DaySixProgram
     Console.WriteLine(partTwo);
   }
 
-  private HashSet<int> SpaceIndexes(string line)
+  private static HashSet<int> SpaceIndexes(string line)
   {
     var result = new HashSet<int>();
     for (int c = 0; c < line.Length; c++)
