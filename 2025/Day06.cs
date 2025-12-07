@@ -15,18 +15,19 @@ public static class DaySixProgram
       .Split(" ", StringSplitOptions.RemoveEmptyEntries)
       .Select(long.Parse)
       .ToArray();
-    var funcs = operations.Select(op => op switch
+    var funcs = operations.Select<string,Func<long,long,long>>(op => op switch
       {
-        "+" => (x,y) => x+y,
-        "*" => (x,y) => x*y,
-        _ => (x,y) => x // unused
+        "+" => (long x,long y) => x+y,
+        "*" => (long x,long y) => x*y,
+        _ => (long x,long y) => x // unused
       }).ToArray();
     for (var ln = 1; ln < lines.Length - 2; ln++)
     {
-      var middleLine = lines[ln].Select(long.Parse).ToArray();
+      var operands = lines[ln].Split(" ", StringSplitOptions.RemoveEmptyEntries)
+        .Select(long.Parse).ToArray();
       for (var i = 0; i < operations.Length; i++)
       {
-        results[i] = funcs[i](results[i], middleLine[i]);
+        results[i] = funcs[i](results[i], operands[i]);
       }
     }
     
