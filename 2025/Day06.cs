@@ -103,7 +103,7 @@ public static class DaySixProgram
         var operand = long.Parse(new string(digits.ToArray()).Trim());
         result = funcs[prob](result, operand);
       }
-      partTwo += result
+      partTwo += result;
     }
 
     Console.WriteLine(partTwo);
