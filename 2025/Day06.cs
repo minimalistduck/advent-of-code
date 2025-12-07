@@ -29,7 +29,7 @@ public static class DaySixProgram
         _ => (BigInteger x, BigInteger y) => x // unused
       }).ToArray();
     
-    for (var ln = 1; ln < lines.Length - 2; ln++)
+    for (var ln = 1; ln < lines.Length - 1; ln++)
     {
       var operands = lines[ln].Split(" ", StringSplitOptions.RemoveEmptyEntries)
         .Select(ParseBigInt).ToArray();
