@@ -9,9 +9,28 @@ public static class DaySixProgram
 
   private static void SolvePartOne(string[] lines)
   {
-    var partOne = 0;
+    var operations = lines.Last().Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
-    Console.WriteLine(partOne);
+    var results = lines.First()
+      .Split(" ", StringSplitOptions.RemoveEmptyEntries)
+      .Select(long.Parse)
+      .ToArray();
+    var funcs = operations.Select(op => op switch
+      {
+        "+" => (x,y) => x+y,
+        "*" => (x,y) => x*y,
+        _ => (x,y) => x // unused
+      }).ToArray();
+    for (var ln = 1; ln < lines.Length - 2; ln++)
+    {
+      var middleLine = lines[ln].Select(long.Parse).ToArray();
+      for (var i = 0; i < operations.Length; i++)
+      {
+        results[i] = funcs[i](results[i], middleLine[i]);
+      }
+    }
+    
+    Console.WriteLine(results.Sum());
   }
 
   private static void SolvePartTwo(string[] lines)
