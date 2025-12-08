@@ -66,6 +66,8 @@ public static class DaySevenProgram
         partOne++;
       }
     }
+
+    Console.WriteLine(partOne);
   }
 
   private static void SolvePartTwo(string[] lines)
