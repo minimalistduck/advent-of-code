@@ -61,7 +61,7 @@ public static class DaySevenProgram
     var partOne = 0;
     for (var col = 1; col < width - 1; col++)
     {
-      if (grid[] == '|')
+      if (grid[col,bottomRow] == '|')
       {
         partOne++;
       }
