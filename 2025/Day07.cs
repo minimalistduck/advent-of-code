@@ -34,7 +34,7 @@ public static class DaySevenProgram
       {
         if (lines[y][x-1] == '^')
         {
-          grid[x][y] = '^';
+          grid[x,y] = '^';
         }
       }
     }
