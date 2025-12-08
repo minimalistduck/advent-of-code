@@ -9,6 +9,8 @@ public static class DaySevenProgram
 
   private static void SolvePartOne(string[] lines)
   {
+    var partOne = 0;
+    
     var width = lines[0].Length + 2;
     var height = lines.Length;
     
@@ -49,21 +51,12 @@ public static class DaySevenProgram
           // assuming there isn't a splitter there too
           grid[col-1,row] = '|';
           grid[col+1,row] = '|';
+          partOne++;
         }
         else if (grid[col,rowAbove] == '|')
         {
           grid[col,row] = '|';
         } 
-      }
-    }
-    
-    var bottomRow = height - 1;
-    var partOne = 0;
-    for (var col = 1; col < width - 1; col++)
-    {
-      if (grid[col,bottomRow] == '|')
-      {
-        partOne++;
       }
     }
 
