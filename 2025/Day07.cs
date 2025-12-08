@@ -9,9 +9,63 @@ public static class DaySevenProgram
 
   private static void SolvePartOne(string[] lines)
   {
+    var width = lines[0].Length + 2;
+    var height = lines.Length;
+    
+    var grid = new char[width,height];
+    
+    for (var x = 0; x < width; x++)
+    {
+      for (var y = 0; y < height; y++)
+      {
+        grid[x,y] = '.';
+      }
+    }
+    
+    for (var x = 1; x < width - 1; x++)
+    {
+      if (lines[0][x-1] == 'S')
+        grid[x,0] = '|';
+    }
+    
+    for (var y = 1; y < height; y++)
+    {
+      for (var x = 1; x < width - 1; x++)
+      {
+        if (lines[y][x-1] == '^')
+        {
+          grid[x][y] = '^';
+        }
+      }
+    }
+    
+    for (var row = 1; row < height; row++)
+    {
+      var rowAbove = row - 1;
+      for (var col = 1; col < width - 1; col++)
+      {
+        if (grid[col,row] == '^' && grid[col,rowAbove] == '|')
+        {
+          // assuming there isn't a splitter there too
+          grid[col-1,row] = '|';
+          grid[col+1,row] = '|';
+        }
+        else if (grid[col,rowAbove] == '|')
+        {
+          grid[col,row] = '|';
+        } 
+      }
+    }
+    
+    var bottomRow = height - 1;
     var partOne = 0;
-
-    Console.WriteLine(partOne);
+    for (var col = 1; col < width - 1; col++)
+    {
+      if (grid[] == '|')
+      {
+        partOne++;
+      }
+    }
   }
 
   private static void SolvePartTwo(string[] lines)
