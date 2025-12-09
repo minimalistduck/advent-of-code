@@ -117,7 +117,7 @@ public static class DaySevenProgram
     var lastRow = height - 1;
     for (var col = 1; col < width - 1; col++)
     {
-      partTwp += grid[col,lastRow];
+      partTwo += grid[col,lastRow];
     }
 
     Console.WriteLine(partTwo);
