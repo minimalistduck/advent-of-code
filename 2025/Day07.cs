@@ -69,20 +69,20 @@ public static class DaySevenProgram
     var width = lines[0].Length + 2;
     var height = lines.Length;
     
-    var grid = new int[width,height];
+    var grid = new long[width,height];
     
     for (var x = 0; x < width; x++)
     {
       for (var y = 0; y < height; y++)
       {
-        grid[x,y] = 0;
+        grid[x,y] = 0L;
       }
     }
     
     for (var x = 1; x < width - 1; x++)
     {
       if (lines[0][x-1] == 'S')
-        grid[x,0] = 1;
+        grid[x,0] = 1L;
     }
     
     for (var y = 1; y < height; y++)
@@ -91,7 +91,7 @@ public static class DaySevenProgram
       {
         if (lines[y][x-1] == '^')
         {
-          grid[x,y] = -1;
+          grid[x,y] = -1L;
         }
       }
     }
@@ -101,7 +101,7 @@ public static class DaySevenProgram
       var rowAbove = row - 1;
       for (var col = 1; col < width - 1; col++)
       {
-        if (grid[col,row] == -1 && grid[col,rowAbove] > 0)
+        if (grid[col,row] == -1L && grid[col,rowAbove] > 0L)
         {
           // assuming there isn't a splitter there too
           grid[col-1,row] += grid[col, rowAbove];
@@ -114,7 +114,7 @@ public static class DaySevenProgram
       }
     }
 
-    var partTwo = 0;
+    var partTwo = 0L;
     var lastRow = height - 1;
     for (var col = 1; col < width - 1; col++)
     {
