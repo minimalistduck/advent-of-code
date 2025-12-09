@@ -4,6 +4,7 @@ public static class DaySevenProgram
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
 
+    // 1391356900 is too low
     SolvePartTwo(lines);
   }
 
@@ -108,7 +109,7 @@ public static class DaySevenProgram
         }
         else if (grid[col,rowAbove] > 0)
         {
-          grid[col,row] = grid[col, rowAbove];
+          grid[col,row] += grid[col, rowAbove];
         } 
       }
     }
