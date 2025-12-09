@@ -65,9 +65,6 @@ public static class DaySevenProgram
 
   private static void SolvePartTwo(string[] lines)
   {
-    var partTwo = 0;
-
-    
     var width = lines[0].Length + 2;
     var height = lines.Length;
     
@@ -114,6 +111,13 @@ public static class DaySevenProgram
           grid[col,row] = grid[col, rowAbove];
         } 
       }
+    }
+
+    var partTwo = 0;
+    var lastRow = height - 1;
+    for (var col = 1; col < width - 1; col++)
+    {
+      partTwp += grid[col,lastRow];
     }
 
     Console.WriteLine(partTwo);
