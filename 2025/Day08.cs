@@ -3,11 +3,12 @@ public static class DayEightProgram
   public static void Main(string[] args)
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
-    // 76624086587804 is too high (wrong day)
-    SolvePartOne(lines);
+
+    Solve(lines, false);
+    Solve(lines, true);
   }
 
-  private static void SolvePartOne(string[] lines)
+  private static void Solve(string[] lines, bool isPartTwo)
   {
     var things = new List<Thing>();
     foreach (var line in lines)
@@ -25,16 +26,19 @@ public static class DayEightProgram
     }
     
     var nextGroupNum = 1;
+    var distinctGroupNums = new HashSet<int>();
     foreach (var thing in things)
     {
       thing.GroupNum = nextGroupNum;
+      distinctGroupNums.Add(nextGroupNum);
       nextGroupNum++;
     }
     
     pairs.Sort((p, q) => p.DistanceRank.CompareTo(q.DistanceRank));
 
     var debugCount = 0;
-    foreach (var mergingPair in pairs.Take(1000))
+    var worklist = isPartTwo ? pairs : pairs.Take(1000);
+    foreach (var mergingPair in worklist)
     {
       var firstMergingGroup = mergingPair.First.GroupNum;
       var secondMergingGroup = mergingPair.Second.GroupNum;
@@ -46,38 +50,45 @@ public static class DayEightProgram
       {
         member.GroupNum = nextGroupNum;
       }
+      
+      distinctGroupNums.Remove(firstMergingGroup);
+      distinctGroupNums.Remove(secondMergingGroup);
+      distinctGroupNums.Add(nextGroupNum);
+      if (distinctGroupNums.Count == 1)
+      {
+        Console.WriteLine($"Part Two: {mergingPair.First.X * mergingPair.Second.X}");
+        break;
+      }
+      
       nextGroupNum++;
       debugCount++;
     }
-    
-    var groupSizes = new Dictionary<int, int>();
-    foreach (var thing in things)
+
+    if (!isPartTwo)
     {
-      groupSizes[thing.GroupNum] = 0;
-    }
-    foreach (var thing in things)
-    {
-      groupSizes[thing.GroupNum] = groupSizes[thing.GroupNum] + 1;
+      var groupSizes = new Dictionary<int, int>();
+      foreach (var thing in things)
+      {
+        groupSizes[thing.GroupNum] = 0;
+      }
+      foreach (var thing in things)
+      {
+        groupSizes[thing.GroupNum] = groupSizes[thing.GroupNum] + 1;
+      }
+  
+      var sizes = groupSizes.Values.ToArray();
+      Array.Sort(sizes);
+      Array.Reverse(sizes); // ?
+      
+      var partOne = 1L;
+      foreach (var sz in sizes.Take(3))
+      {
+        partOne *= sz;
+      }
+      
+      Console.WriteLine($"Part One: {partOne}");
     }
 
-    var sizes = groupSizes.Values.ToArray();
-    Array.Sort(sizes);
-    Array.Reverse(sizes); // ?
-    
-    var partOne = 1L;
-    foreach (var sz in sizes.Take(3))
-    {
-      partOne *= sz;
-    }
-    
-    Console.WriteLine(partOne);
-  }
-
-  private static void SolvePartTwo(string[] lines)
-  {
-    var partTwo = 0;
-
-    Console.WriteLine(partTwo);
   }
 }
 
