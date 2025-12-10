@@ -3,7 +3,7 @@ public static class DayEightProgram
   public static void Main(string[] args)
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
-    // 76624086587804 is too high
+    // 76624086587804 is too high (wrong day)
     SolvePartOne(lines);
   }
 
@@ -15,12 +15,12 @@ public static class DayEightProgram
     things.Add(new Thing(line));
   }
   
-  var pairs = new List<PairOfThing>();
+  var pairs = new List<PairOfThings>();
   for (var i = 0; i < things.Count - 1; i++)
   {
     for (var j = i+1; j < things.Count; j++)
     {
-      pairs.Add(new PairOfThing(things[i], things[j]));
+      pairs.Add(new PairOfThings(things[i], things[j]));
     }
   }
   
