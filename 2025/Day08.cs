@@ -9,62 +9,63 @@ public static class DayEightProgram
 
   private static void SolvePartOne(string[] lines)
   {
-  var things = new List<Thing>();
-  foreach (var line in lines)
-  {
-    things.Add(new Thing(line));
-  }
-  
-  var pairs = new List<PairOfThings>();
-  for (var i = 0; i < things.Count - 1; i++)
-  {
-    for (var j = i+1; j < things.Count; j++)
+    var things = new List<Thing>();
+    foreach (var line in lines)
     {
-      pairs.Add(new PairOfThings(things[i], things[j]));
+      things.Add(new Thing(line));
     }
-  }
-  
-  var nextGroupNum = 1;
-  foreach (var thing in things)
-  {
-    thing.GroupNum = nextGroupNum;
-    nextGroupNum++;
-  }
-  
-  pairs.Sort((p, q) => p.DistanceRank.CompareTo(q.DistanceRank));
-  
-  foreach (var mergingPair in pairs.Take(1000))
-  {
-    var firstMergingGroup = mergingPair.First.GroupNum;
-    var secondMergingGroup = mergingPair.Second.GroupNum;
-    foreach (var member in things.Where(t => t.GroupNum == firstMergingGroup || t.GroupNum == secondMergingGroup).ToArray())
+    
+    var pairs = new List<PairOfThings>();
+    for (var i = 0; i < things.Count - 1; i++)
     {
-      member.GroupNum = nextGroupNum;
+      for (var j = i+1; j < things.Count; j++)
+      {
+        pairs.Add(new PairOfThings(things[i], things[j]));
+      }
     }
-    nextGroupNum++;
+    
+    var nextGroupNum = 1;
+    foreach (var thing in things)
+    {
+      thing.GroupNum = nextGroupNum;
+      nextGroupNum++;
+    }
+    
+    pairs.Sort((p, q) => p.DistanceRank.CompareTo(q.DistanceRank));
+    
+    foreach (var mergingPair in pairs.Take(1000))
+    {
+      var firstMergingGroup = mergingPair.First.GroupNum;
+      var secondMergingGroup = mergingPair.Second.GroupNum;
+      foreach (var member in things.Where(t => t.GroupNum == firstMergingGroup || t.GroupNum == secondMergingGroup).ToArray())
+      {
+        member.GroupNum = nextGroupNum;
+      }
+      nextGroupNum++;
+    }
+    
+    var groupSizes = new Dictionary<int, int>();
+    foreach (var thing in things)
+    {
+      groupSizes[thing.GroupNum] = 0;
+    }
+    foreach (var thing in things)
+    {
+      groupSizes[thing.GroupNum] = groupSizes[thing.GroupNum] + 1;
+    }
+    
+    var sizes = groupSizes.Values.ToArray();
+    Array.Sort(sizes);
+    Array.Reverse(sizes); // ?
+    
+    var partOne = 0L;
+    foreach (var sz in sizes.Take(3))
+    {
+      partOne *= sz;
+    }
+    
+    Console.WriteLine(partOne);
   }
-  
-  var groupSizes = new Dictionary<int, int>();
-  foreach (var thing in things)
-  {
-    groupSizes[thing.GroupNum] = 0;
-  }
-  foreach (var thing in things)
-  {
-    groupSizes[thing.GroupNum] = groupSizes[thing.GroupNum] + 1;
-  }
-  
-  var sizes = groupSizes.Values.ToArray();
-  Array.Sort(sizes);
-  Array.Reverse(sizes); // ?
-  
-  var partOne = 0L;
-  foreach (var sz in sizes.Take(3))
-  {
-    partOne *= sz;
-  }
-  
-  Console.WriteLine(partOne);  }
 
   private static void SolvePartTwo(string[] lines)
   {
@@ -104,14 +105,20 @@ public class Thing
     Y = long.Parse(split[1]);
     Z = long.Parse(split[2]);
   }
+
+  public static long SquareOfDiff(long a, long b)
+  {
+    var diff = b - a;
+    return diff * diff;
+  }
   
   // using suqare of distance to stay in integer space
   public static long DistanceRank(Thing first, Thing second)
   {
     var result = 0L;
-    result += Math.Pow(first.X - second.X, 2);
-    result += Math.Pow(first.Y - second.Y, 2);
-    result += Math.Pow(first.Z - second.Z, 2);
+    result += SquareOfDiff(first.X, second.X);
+    result += SquareOfDiff(first.Y, second.Y);
+    result += SquareOfDiff(first.Z, second.Z);
     return result;
   }
 }
