@@ -3,7 +3,7 @@ public static class DayEightProgram
   public static void Main(string[] args)
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
-
+    // 76624086587804 is too high
     SolvePartOne(lines);
   }
 
