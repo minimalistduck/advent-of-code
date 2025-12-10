@@ -32,16 +32,22 @@ public static class DayEightProgram
     }
     
     pairs.Sort((p, q) => p.DistanceRank.CompareTo(q.DistanceRank));
-    
+
+    var debugCount = 0;
     foreach (var mergingPair in pairs.Take(1000))
     {
       var firstMergingGroup = mergingPair.First.GroupNum;
       var secondMergingGroup = mergingPair.Second.GroupNum;
+      if (debugCount % 100 == 0)
+      {
+        Console.WriteLine($"Merging group {firstMergingGroup} with group {secondMergingGroup}. New group is {nextGroupNum}. Distance rank was {mergingPair.DistanceRank}");
+      }
       foreach (var member in things.Where(t => t.GroupNum == firstMergingGroup || t.GroupNum == secondMergingGroup).ToArray())
       {
         member.GroupNum = nextGroupNum;
       }
       nextGroupNum++;
+      debugCount++;
     }
     
     var groupSizes = new Dictionary<int, int>();
@@ -53,12 +59,12 @@ public static class DayEightProgram
     {
       groupSizes[thing.GroupNum] = groupSizes[thing.GroupNum] + 1;
     }
-    
+
     var sizes = groupSizes.Values.ToArray();
     Array.Sort(sizes);
     Array.Reverse(sizes); // ?
     
-    var partOne = 0L;
+    var partOne = 1L;
     foreach (var sz in sizes.Take(3))
     {
       partOne *= sz;
