@@ -31,7 +31,7 @@ public static class DayEightProgram
     nextGroupNum++;
   }
   
-  pairs.Sort(p => p.DistanceRank);
+  pairs.Sort((p, q) => p.DistanceRank.CompareTo(q.DistanceRank));
   
   foreach (var mergingPair in pairs.Take(1000))
   {
@@ -106,7 +106,7 @@ public class Thing
   }
   
   // using suqare of distance to stay in integer space
-  public static long DistanceRank(long first, long second)
+  public static long DistanceRank(Thing first, Thing second)
   {
     var result = 0L;
     result += Math.Pow(first.X - second.X, 2);
