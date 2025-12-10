@@ -1,5 +1,5 @@
 $year = "2025"
-$day = "08";
+$day = "09";
 
 $ideCodingPath = Join-Path $PSScriptRoot "..\\$year"
 $sourceFile = Join-Path $ideCodingPath "Day$($day).cs"
