@@ -106,9 +106,9 @@ class ResultTracker
     {
       _resultsByIteration.Last().Add(result);
     }
-    if (result == target)
+    if (result == _target)
     {
-      Solved(new SolvedEventArgs(_resultsByIteration.Count));
+      Solved(new SolvedEventArgs(this, _resultsByIteration.Count));
     }
   }
 }
