@@ -115,7 +115,7 @@ class ResultTracker
 
 public class SolvedEventArgs : EventArgs
 {
-  private int Iteration { get; private set; }
+  public int Iteration { get; private set; }
 
   public SolvedEventArgs(int iteration)
   {
