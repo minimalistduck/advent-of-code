@@ -13,9 +13,20 @@ public static class DayTenProgram
 
     foreach (var line in lines)
     {
-      // TODO: parse the target into a uint
-      // Is it easier to reverse the target, so that button 0 is the first bit i.e. 2^0 ?
-
+      var splitLine = line.Split(" ");
+      var targetStr = splitLine[0].Replace("[","").Replace("]","");
+      var target = 0u;
+      for (var i = 0; i < targetStr.Length; i++)
+      {
+        // It is easier to reverse the target, so that button 0 flips the first bit i.e. 2^0
+        var j = targetStr.Length - 1 - i;
+        if (targetStr[j] == '#')
+        {
+          var newBit = 1u << i;
+          target = target | newBit;
+        }
+      }
+      
       var tracker = new ResultTracker(target);
       var keepGoing = true;
       tracker.Solved += (sender, args) => {
@@ -23,7 +34,19 @@ public static class DayTenProgram
         partOne += args.Iteration;
       };
 
-      // TODO: Parse the buttons into uints
+      var buttons = new List<uint>();
+      for (var bs = 1; bs < splitLine.Length - 1; bs++)
+      {
+        var buttonPositions = splitLine[bs].Replace("(", "").Replace(")", "")
+          .Split(",").Select(int.Parse);
+        var button = 0u;
+        foreach (var bp in buttonPositions)
+        {
+          var newBit = 1u << bp;
+          button = button | newBit;
+        }
+        buttons.Add(button);
+      }
       
       do
       {
