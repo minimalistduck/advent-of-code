@@ -59,7 +59,7 @@ public static class DayTenProgram
             tracker.TrackResult(adjacent);
           }
         }
-      } while (keepGoing)
+      } while (keepGoing);
     }
 
     Console.WriteLine(partOne);
