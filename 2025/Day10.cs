@@ -14,6 +14,7 @@ public static class DayTenProgram
     foreach (var line in lines)
     {
       // TODO: parse the target into a uint
+      // Is it easier to reverse the target, so that button 0 is the first bit i.e. 2^0 ?
 
       var tracker = new ResultTracker(target);
       var keepGoing = true;
