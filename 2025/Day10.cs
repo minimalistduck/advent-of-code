@@ -4,7 +4,7 @@ public static class DayTenProgram
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
 
-    SolvePartOne(lines);
+    SolvePartOne(lines.Take(1));
   }
 
   private static void SolvePartOne(string[] lines)
@@ -26,6 +26,7 @@ public static class DayTenProgram
           target = target | newBit;
         }
       }
+      Console.WriteLine("Target: " + target.ToString("B"));
       
       var tracker = new ResultTracker(target);
       var keepGoing = true;
@@ -45,6 +46,7 @@ public static class DayTenProgram
           var newBit = 1u << bp;
           button = button | newBit;
         }
+        Console.WriteLine("Button: " + button.ToString("B"));
         buttons.Add(button);
       }
       
@@ -105,6 +107,7 @@ class ResultTracker
     if (_resultsSeen.Add(result))
     {
       _resultsByIteration.Last().Add(result);
+      Console.WriteLine("Achieved: " + result.ToString("B"));
     }
     if (result == _target)
     {
