@@ -7,7 +7,7 @@ public static class DayTenProgram
     SolvePartOne(lines.Take(1));
   }
 
-  private static void SolvePartOne(string[] lines)
+  private static void SolvePartOne(IEnumerable<string> lines)
   {
     var partOne = 0L;
 
