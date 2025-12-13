@@ -4,7 +4,7 @@ public static class DayTenProgram
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
 
-    SolvePartOne(lines.Take(1));
+    SolvePartOne(lines);
   }
 
   private static void SolvePartOne(IEnumerable<string> lines)
@@ -13,7 +13,7 @@ public static class DayTenProgram
 
     foreach (var line in lines)
     {
-      Console.WriteLine("Input: " + line);
+      //Console.WriteLine("Input: " + line);
       var splitLine = line.Split(" ");
       var targetStr = splitLine[0].Replace("[","").Replace("]","");
       var target = 0u;
@@ -24,11 +24,11 @@ public static class DayTenProgram
         if (targetStr[i] == '#')
         {
           var newBit = 1u << i;
-          Console.WriteLine($"i={i}, targetStr[i]={targetStr[i]}, newBit={newBit:B}");
+          //Console.WriteLine($"i={i}, targetStr[i]={targetStr[i]}, newBit={newBit:B}");
           target = target | newBit;
         }
       }
-      Console.WriteLine("Target: " + target.ToString("B"));
+      //Console.WriteLine("Target: " + target.ToString("B"));
       
       var tracker = new ResultTracker(target);
       var keepGoing = true;
@@ -48,7 +48,7 @@ public static class DayTenProgram
           var newBit = 1u << bp;
           button = button | newBit;
         }
-        Console.WriteLine("Button: " + button.ToString("B"));
+        //Console.WriteLine("Button: " + button.ToString("B"));
         buttons.Add(button);
       }
       
@@ -100,7 +100,7 @@ class ResultTracker
   // to start from when generating the results for the next iteration
   public IEnumerable<uint> NextIteration()
   {
-    Console.WriteLine("Iteration: " + _resultsByIteration.Count);
+    //Console.WriteLine("Iteration: " + _resultsByIteration.Count);
     var result = _resultsByIteration.Last();
     _resultsByIteration.Add(new HashSet<uint>());
     return result;
@@ -114,7 +114,7 @@ class ResultTracker
     if (_resultsSeen.Add(result))
     {
       _resultsByIteration.Last().Add(result);
-      Console.WriteLine("Achieved: " + result.ToString("B"));
+      //Console.WriteLine("Achieved: " + result.ToString("B"));
     }
     if (result == _target)
     {
