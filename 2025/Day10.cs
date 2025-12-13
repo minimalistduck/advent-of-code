@@ -13,6 +13,7 @@ public static class DayTenProgram
 
     foreach (var line in lines)
     {
+      Console.WriteLine("Input: " + line);
       var splitLine = line.Split(" ");
       var targetStr = splitLine[0].Replace("[","").Replace("]","");
       var target = 0u;
@@ -53,6 +54,10 @@ public static class DayTenProgram
       do
       {
         var worklist = tracker.NextIteration().ToArray();
+        if (worklist.Length == 0)
+        {
+          keepGoing = false;
+        }
         for (var w = 0; w < worklist.Length && keepGoing; w++)
         {
           foreach (var b in buttons)
@@ -94,6 +99,7 @@ class ResultTracker
   // to start from when generating the results for the next iteration
   public IEnumerable<uint> NextIteration()
   {
+    Console.WriteLine("Iteration: " + _resultsByIteration.Count);
     var result = _resultsByIteration.Last();
     _resultsByIteration.Add(new HashSet<uint>());
     return result;
