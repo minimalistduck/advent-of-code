@@ -4,6 +4,7 @@ public static class DayTenProgram
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
 
+    // 678 is too high
     SolvePartOne(lines);
   }
 
