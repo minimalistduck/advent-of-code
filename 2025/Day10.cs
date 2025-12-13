@@ -21,9 +21,10 @@ public static class DayTenProgram
       {
         // It is easier to reverse the target, so that button 0 flips the first bit i.e. 2^0
         var j = targetStr.Length - 1 - i;
-        if (targetStr[j] == '#')
+        if (targetStr[i] == '#')
         {
-          var newBit = 1u << i;
+          var newBit = 1u << j;
+          Console.WriteLine($"i={i}, targetStr[i]={targetStr[i]}, newBit={newBit:B}");
           target = target | newBit;
         }
       }
