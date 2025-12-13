@@ -19,11 +19,11 @@ public static class DayTenProgram
       var target = 0u;
       for (var i = 0; i < targetStr.Length; i++)
       {
-        // It is easier to reverse the target, so that button 0 flips the first bit i.e. 2^0
-        var j = targetStr.Length - 1 - i;
+        // The bits of target will be the reverse of targetStr, but that's what we want
+        // - in the rightmost bit (shift 0) we want the leftmost light 
         if (targetStr[i] == '#')
         {
-          var newBit = 1u << j;
+          var newBit = 1u << i;
           Console.WriteLine($"i={i}, targetStr[i]={targetStr[i]}, newBit={newBit:B}");
           target = target | newBit;
         }
