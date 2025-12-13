@@ -119,7 +119,7 @@ class ResultTracker
     }
     if (result == _target)
     {
-      Solved(this, new SolvedEventArgs(_resultsByIteration.Count));
+      Solved(this, new SolvedEventArgs(_resultsByIteration.Count-1));
     }
   }
 }
