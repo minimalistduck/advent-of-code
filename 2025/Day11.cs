@@ -40,7 +40,7 @@ public class ResultTracker<T>
 {
   private T _target;
   private HashSet<T> _resultsSeen = new HashSet<uint>();
-  private List<HashSet<T>> _resultsByIteration = new List<HashSet<uint>>();
+  private List<HashSet<T>> _resultsByIteration = new List<HashSet<T>>();
 
   public ResultTracker(T initial, T target)
   {
@@ -71,7 +71,7 @@ public class ResultTracker<T>
       _resultsByIteration.Last().Add(result);
       //Console.WriteLine("Achieved: " + result.ToString());
     }
-    if (result == _target)
+    if (result.Equals(_target))
     {
       Solved(this, new SolvedEventArgs(_resultsByIteration.Count-1));
     }
