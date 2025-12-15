@@ -9,8 +9,6 @@ public static class DayElevenProgram
 
   private static void SolvePartOne(string[] lines)
   {
-    //var partOne = 0;
-
     var edgeDict = new Dictionary<string, string[]>();
     foreach (var line in lines)
     {
@@ -35,7 +33,7 @@ public static class DayElevenProgram
         Console.WriteLine("Ran out of possibilities");
         keepGoing = false;
       }
-      for (var node = 0; n < worklist.Length && keepGoing; n++)
+      for (var n = 0; n < worklist.Length && keepGoing; n++)
       {
         foreach (var adjNode in edgeDict[worklist[n]])
         {
