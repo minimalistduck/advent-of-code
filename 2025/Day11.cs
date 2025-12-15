@@ -14,9 +14,7 @@ public static class DayElevenProgram
     {
       var firstSplit = line.Split(":");
       var thisNode = firstSplit[0];
-      var adjNodes = string.IsNullOrWhiteSpace(firstSplit[1]) ?
-        new string[0] :
-        firstSplit[1].Split(" ").Select(s => s.Trim()).ToArray();
+      var adjNodes = firstSplit[1].Trim().Split(" ").Select(s => s.Trim()).ToArray();
       edgeDict.Add(thisNode, adjNodes);      
     }
 
