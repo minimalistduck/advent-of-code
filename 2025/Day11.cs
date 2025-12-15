@@ -39,7 +39,7 @@ public static class DayElevenProgram
 public class ResultTracker<T>
 {
   private T _target;
-  private HashSet<T> _resultsSeen = new HashSet<uint>();
+  private HashSet<T> _resultsSeen = new HashSet<T>();
   private List<HashSet<T>> _resultsByIteration = new List<HashSet<T>>();
 
   public ResultTracker(T initial, T target)
