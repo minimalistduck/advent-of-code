@@ -14,8 +14,10 @@ public static class DayElevenProgram
     {
       var firstSplit = line.Split(":");
       var thisNode = firstSplit[0];
-      var secondSplit = firstSplit[1].Split(" ").Select(s => s.Trim()).ToArray();
-      edgeDict.Add(thisNode, secondSplit);      
+      var adjNodes = string.IsNullOrWhiteSpace(firstSplit[1]) ?
+        new string[0] :
+        firstSplit[1].Split(" ").Select(s => s.Trim()).ToArray();
+      edgeDict.Add(thisNode, adjNodes);      
     }
 
     var tracker = new ResultTracker<string>("you", "out");
