@@ -29,17 +29,17 @@ public static class DayElevenProgram
     };
     do
     {
-      var worklist = tracker.NextIteration();
-      if (worklist.Count == 0)
+      var worklist = tracker.NextIteration().ToArray();
+      if (worklist.Length == 0)
       {
         Console.WriteLine("Ran out of possibilities");
         keepGoing = false;
       }
-      foreach (var node in worklist)
+      for (var node = 0; n < worklist.Length && keepGoing; n++)
       {
-        foreach (var adjNode in edgeDict[node])
+        foreach (var adjNode in edgeDict[worklist[n]])
         {
-          resultTracker.TrackResult(adjNode);
+          tracker.TrackResult(adjNode);
         }
       }
     }
