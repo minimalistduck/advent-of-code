@@ -20,12 +20,30 @@ public static class DayElevenProgram
       edgeDict.Add(thisNode, secondSplit);      
     }
 
-    // debug
-    foreach (var adj in edgeDict["you"])
+    var tracker = new ResultTracker<string>("you", "out");
+    var keepGoing = true;
+    tracker.Solved += (sender, args) =>
     {
-      Console.WriteLine($"you -> {adj}");
+      keepGoing = false;
+      Console.WriteLine(args.Iteration);
+    };
+    do
+    {
+      var worklist = tracker.NextIteration();
+      if (worklist.Count == 0)
+      {
+        Console.WriteLine("Ran out of possibilities");
+        keepGoing = false;
+      }
+      foreach (var node in worklist)
+      {
+        foreach (var adjNode in edgeDict[node])
+        {
+          resultTracker.TrackResult(adjNode);
+        }
+      }
     }
-    //Console.WriteLine(partOne);
+    while (keepGoing);
   }
 
   private static void SolvePartTwo(string[] lines)
