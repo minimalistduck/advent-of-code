@@ -9,6 +9,8 @@ public static class DayElevenProgram
 
   private static void SolvePartOne(string[] lines)
   {
+    var partOne = 0L;
+    
     var edgeDict = new Dictionary<string, string[]>();
     foreach (var line in lines)
     {
@@ -18,30 +20,41 @@ public static class DayElevenProgram
       edgeDict.Add(thisNode, adjNodes);      
     }
 
-    var tracker = new ResultTracker<string>("you", "out");
-    var keepGoing = true;
-    tracker.Solved += (sender, args) =>
+    var initialQueue = new Queue<string>();
+    initialQueue.Enqueue("you");
+    var breadcrumb = = new Stack<Queue<string>>();
+    breadcrumb.Push(initialQueue);
+
+    var done = false;
+    while (!done)
     {
-      keepGoing = false;
-      Console.WriteLine(args.Iteration);
-    };
-    do
-    {
-      var worklist = tracker.NextIteration().ToArray();
-      if (worklist.Length == 0)
+      var workQueue = breadcrumb.Peek();
+      while (workQueue.Count == 0 && breadcrumb.Count > 0)
       {
-        Console.WriteLine("Ran out of possibilities");
-        keepGoing = false;
+        breadcrumb.Pop();
+        workQueue = breadcrumb.Peek();
       }
-      for (var n = 0; n < worklist.Length && keepGoing; n++)
+      if (workQueue.Count == 0)
+        continue;
+
+      var item = workQueue.Dequeue();
+      if (item.Equals("out"))
       {
-        foreach (var adjNode in edgeDict[worklist[n]])
+        partOne++;
+      }
+      else
+      {
+        var nextItems = edgeDict[item];
+        if (nextItems.Count > 0)
         {
-          tracker.TrackResult(adjNode);
+          deeperQueue = new Queue<string>(nextItems);
+          breadcrumb.Push(deeperQueue);
         }
       }
+      done = breadcrumb.Sum(q => q.Count) == 0;
     }
-    while (keepGoing);
+
+    Console.WriteLine(partOne);
   }
 
   private static void SolvePartTwo(string[] lines)
@@ -49,57 +62,5 @@ public static class DayElevenProgram
     var partTwo = 0;
 
     Console.WriteLine(partTwo);
-  }
-}
-
-public class ResultTracker<T>
-{
-  private T _target;
-  private HashSet<T> _resultsSeen = new HashSet<T>();
-  private List<HashSet<T>> _resultsByIteration = new List<HashSet<T>>();
-
-  public ResultTracker(T initial, T target)
-  {
-    _target = target;
-    _resultsSeen.Add(initial);
-    var resultsAtIterationZero = new HashSet<T>();
-    resultsAtIterationZero.Add(initial);
-    _resultsByIteration.Add(resultsAtIterationZero);
-  }
-
-  // Advances to the next iteration, and returns the worklist
-  // to start from when generating the results for the next iteration
-  public IEnumerable<T> NextIteration()
-  {
-    //Console.WriteLine("Iteration: " + _resultsByIteration.Count);
-    var result = _resultsByIteration.Last();
-    _resultsByIteration.Add(new HashSet<T>());
-    return result;
-  }
-
-  public event EventHandler<SolvedEventArgs> Solved;
-
-  public void TrackResult(T result)
-  {
-    // only retain new results
-    if (_resultsSeen.Add(result))
-    {
-      _resultsByIteration.Last().Add(result);
-      //Console.WriteLine("Achieved: " + result.ToString());
-    }
-    if (result.Equals(_target))
-    {
-      Solved(this, new SolvedEventArgs(_resultsByIteration.Count-1));
-    }
-  }
-}
-
-public class SolvedEventArgs : EventArgs
-{
-  public int Iteration { get; private set; }
-
-  public SolvedEventArgs(int iteration)
-  {
-    Iteration = iteration;
   }
 }
