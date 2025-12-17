@@ -89,7 +89,7 @@ public static class DayElevenProgram
       if (pathSet.Contains(item))
       {
         throw new InvalidOperationException("Cycle detected: " +
-          string.Join(path.Reverse(), "->") + "->" + item);
+          string.Join("->", path.Reverse()) + "->" + item);
       }
       if (item.Equals("out"))
       {
