@@ -15,8 +15,8 @@ public static class DayElevenProgram
     edgeDict.Add("out", new string[0]);
 
     //SolvePartOne(edgeDict, "you", "out");
-    //SolvePartOne(edgeDict, "svr", "dac"); // diagnostic
-    SolvePartTwo(edgeDict, "svr");
+    SolvePartOne(edgeDict, "dac", "out"); // diagnostic
+    //SolvePartTwo(edgeDict, "svr");
   }
 
   private static void SolvePartOne(Dictionary<string, string[]> edgeDict, string start, string end)
