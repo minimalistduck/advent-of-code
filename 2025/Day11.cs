@@ -13,11 +13,12 @@ public static class DayElevenProgram
       edgeDict.Add(thisNode, adjNodes);      
     }
 
-    SolvePartOne(edgeDict, "you");
-    SolvePartTwo(edgeDict, "svr");
+    //SolvePartOne(edgeDict, "you", "out");
+    SolvePartOne(edgeDict, "svr", "dac");
+    //SolvePartTwo(edgeDict, "svr");
   }
 
-  private static void SolvePartOne(Dictionary<string, string[]> edgeDict, string start)
+  private static void SolvePartOne(Dictionary<string, string[]> edgeDict, string start, string end)
   {
     var partOne = 0L;
     
@@ -39,7 +40,7 @@ public static class DayElevenProgram
         continue;
 
       var item = workQueue.Dequeue();
-      if (item.Equals("out"))
+      if (item.Equals(end))
       {
         partOne++;
       }
@@ -55,7 +56,7 @@ public static class DayElevenProgram
       done = breadcrumb.Sum(q => q.Count) == 0;
     }
 
-    Console.WriteLine(partOne);
+    Console.WriteLine($"Paths from {start} to {end}: {partOne}");
   }
 
   private static void SolvePartTwo(Dictionary<string, string[]> edgeDict, string start)
