@@ -45,9 +45,9 @@ public static class DayElevenProgram
       else
       {
         var nextItems = edgeDict[item];
-        if (nextItems.Count > 0)
+        if (nextItems.Length > 0)
         {
-          deeperQueue = new Queue<string>(nextItems);
+          var deeperQueue = new Queue<string>(nextItems);
           breadcrumb.Push(deeperQueue);
         }
       }
