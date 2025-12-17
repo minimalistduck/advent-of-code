@@ -12,6 +12,7 @@ public static class DayElevenProgram
       var adjNodes = firstSplit[1].Trim().Split(" ").Select(s => s.Trim()).ToArray();
       edgeDict.Add(thisNode, adjNodes);      
     }
+    edgeDict.Add("out", new string[0]);
 
     //SolvePartOne(edgeDict, "you", "out");
     SolvePartOne(edgeDict, "svr", "dac");
