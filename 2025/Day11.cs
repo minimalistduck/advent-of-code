@@ -83,9 +83,12 @@ public static class DayElevenProgram
         continue;
 
       var item = workQueue.Dequeue();
-      if (item.Equals("out") && path.Contains("dac") && path.Contains("fft"))
+      if (item.Equals("out"))
       {
-        partTwo++;
+        if (path.Contains("dac") && path.Contains("fft"))
+        {
+          partTwo++;
+        }
       }
       else
       {
