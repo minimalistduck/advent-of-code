@@ -69,7 +69,6 @@ public static class DayElevenProgram
     var unsearched = new Stack<Queue<string>>();
     unsearched.Push(initialQueue);
     var path = new Stack<string>();
-    path.Push(start);
 
     var done = false;
     while (!done)
