@@ -15,7 +15,11 @@ public static class DayElevenProgram
     edgeDict.Add("out", new string[0]);
 
     //SolvePartOne(edgeDict, "you", "out");
-    SolvePartOne(edgeDict, "dac", "out"); // diagnostic
+
+    // investigating the scale of Part Two
+    // Paths from dac to out: 3050
+    
+    SolvePartOne(edgeDict, "fft", "out"); // diagnostic
     //SolvePartTwo(edgeDict, "svr");
   }
 
