@@ -15,8 +15,8 @@ public static class DayElevenProgram
     edgeDict.Add("out", new string[0]);
 
     //SolvePartOne(edgeDict, "you", "out");
-    SolvePartOne(edgeDict, "svr", "dac");
-    //SolvePartTwo(edgeDict, "svr");
+    //SolvePartOne(edgeDict, "svr", "dac"); // diagnostic
+    SolvePartTwo(edgeDict, "svr");
   }
 
   private static void SolvePartOne(Dictionary<string, string[]> edgeDict, string start, string end)
@@ -85,9 +85,15 @@ public static class DayElevenProgram
         continue;
 
       var item = workQueue.Dequeue();
+      var pathSet = new HashSet<string>(path);
+      if (pathSet.Contains(item))
+      {
+        throw new InvalidOperationException("Cycle detected: " +
+          string.Join(path.Reverse(), "->") + "->" + item);
+      }
       if (item.Equals("out"))
       {
-        if (path.Contains("dac") && path.Contains("fft"))
+        if (pathSet.Contains("dac") && pathSet.Contains("fft"))
         {
           partTwo++;
         }
