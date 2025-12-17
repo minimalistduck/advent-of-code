@@ -22,7 +22,7 @@ public static class DayElevenProgram
 
     var initialQueue = new Queue<string>();
     initialQueue.Enqueue("you");
-    var breadcrumb = = new Stack<Queue<string>>();
+    var breadcrumb = new Stack<Queue<string>>();
     breadcrumb.Push(initialQueue);
 
     var done = false;
