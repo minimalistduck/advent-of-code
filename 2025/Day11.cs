@@ -18,8 +18,9 @@ public static class DayElevenProgram
 
     // investigating the scale of Part Two
     // Paths from dac to out: 3050
+    // From fft to out: gave up after 15 min
     
-    SolvePartOne(edgeDict, "fft", "out"); // diagnostic
+    SolvePartOne(edgeDict, "svr", "dac"); // diagnostic
     //SolvePartTwo(edgeDict, "svr");
   }
 
