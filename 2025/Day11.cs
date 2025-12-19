@@ -84,10 +84,10 @@ public static class DayElevenProgram
       }
     }
 
-    nodes[start].PathsInto = 1;
+    nodes[start].PathsInto = 1L;
     foreach (var node in nodes.Values.Where(n => !n.PathsInto.HasValue && !n.HasIncomingNodes))
     {
-      node.PathsInto = 0;
+      node.PathsInto = 0L;
     }
 
     var targetNode = nodes["out"];
@@ -100,7 +100,7 @@ public class Node
 {
   private readonly List<Node> _incomingNodes = new List<Node>();
   private readonly string _name;
-  public int? PathsInto = null;
+  public long? PathsInto = null;
   
   public Node(string name)
   {
@@ -114,12 +114,12 @@ public class Node
 
   public bool HasIncomingNodes => _incomingNodes.Count > 0;
 
-  public int CalculatePathsInto()
+  public long CalculatePathsInto()
   {
     if (PathsInto.HasValue)
       return PathsInto.Value;
 
-    var result = 0;
+    var result = 0L;
     foreach (var earlierNode in _incomingNodes)
     {
       result += earlierNode.CalculatePathsInto();
