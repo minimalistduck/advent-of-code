@@ -20,9 +20,9 @@ public static class DayElevenProgram
     // Paths from dac to out: 3050
     // From fft to out: gave up after 15 min
     // from svr to dac: gave up after 13 min
-    SolvePartOne(edgeDict, "svr", "dac"); // diagnostic
+    //SolvePartOne(edgeDict, "svr", "dac"); // diagnostic
     
-    //SolvePartTwo(edgeDict, "svr");
+    SolvePartTwo(edgeDict, "svr");
   }
 
   private static void SolvePartOne(Dictionary<string, string[]> edgeDict, string start, string end)
@@ -78,9 +78,9 @@ public static class DayElevenProgram
     foreach (var entry in edgeDict)
     {
       var fromNode = nodes[entry.Key];
-      foreach (var toNode in entry.Value)
+      foreach (var toName in entry.Value)
       {
-        toNode.AddIncomingNode(fromNode);
+        nodes[toName].AddIncomingNode(fromNode);
       }
     }
 
