@@ -84,21 +84,58 @@ public static class DayElevenProgram
       }
     }
 
-    nodes[start].PathsInto = 1L;
-    foreach (var node in nodes.Values.Where(n => !n.PathsInto.HasValue && !n.HasIncomingNodes))
-    {
-      node.PathsInto = 0L;
-    }
-
-    var targetNode = nodes["out"];
-    var pathCount = targetNode.CalculatePathsInto();
-    Console.WriteLine($"Total paths (ignoring constraints) from {start} to out: {pathCount}");
-
     foreach (var node in nodes.Values)
     {
-      var nodePathText = node.PathsInto.HasValue ? node.PathsInto.Value.ToString() : "not visited";
-      Console.WriteLine($"{node.Name}'s incoming paths: {nodePathText}");
+      node.Reset();
     }
+    nodes[start].PathsInto = 1L;
+
+    var targetNode = nodes["out"];
+    var unconstrainedCount = targetNode.CalculatePathsInto();
+    Console.WriteLine($"Total paths (ignoring constraints) from {start} to out: {unconstrainedCount}");
+
+    //foreach (var node in nodes.Values)
+    //{
+    //  var nodePathText = node.PathsInto.HasValue ? node.PathsInto.Value.ToString() : "not visited";
+    //  Console.WriteLine($"{node.Name}'s incoming paths: {nodePathText}");
+    //}
+
+    // Do it again, ruling out paths that go via dac
+    foreach (var node in nodes.Values)
+    {
+      node.Reset();
+    }
+    nodes[start].PathsInto = 1L;
+    nodes["dac"].PathsInto = 0L;
+
+    var countWithoutDac = targetNode.CalculatePathsInto();
+    Console.WriteLine($"Total paths not passing through dac: {countWithoutDac}");
+
+    // Do it again, ruling out paths that go via fft
+    foreach (var node in nodes.Values)
+    {
+      node.Reset();
+    }
+    nodes[start].PathsInto = 1L;
+    nodes["fft"].PathsInto = 0L;
+
+    var countWithoutFft = targetNode.CalculatePathsInto();
+    Console.WriteLine($"Total paths not passing through fft: {countWithoutDac}");
+
+    // Maybe we've double-counted some paths
+    foreach (var node in nodes.Values)
+    {
+      node.Reset();
+    }
+    nodes[start].PathsInto = 1L;
+    nodes["dac"].PathsInto = 0L;
+    nodes["fft"].PathsInto = 0L;
+
+    var countWithoutBoth = targetNode.CalculatePathsInto();
+    Console.WriteLine($"Total paths not passing through dac or fft: {countWithoutBoth}");
+
+    var partTwo = unconstrainedCount - countWithoutDac - countWithoutFft + countWithoutBoth;
+    Console.WriteLine(partTwo);
   }
 }
 
@@ -134,5 +171,10 @@ public class Node
     }
     PathsInto = result;
     return result;
+  }
+
+  public void Reset()
+  {
+    PathsInto = _incomingNodes.Count == 0 ? 0L : default(long?);
   }
 }
