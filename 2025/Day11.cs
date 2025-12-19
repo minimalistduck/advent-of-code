@@ -93,6 +93,12 @@ public static class DayElevenProgram
     var targetNode = nodes["out"];
     var pathCount = targetNode.CalculatePathsInto();
     Console.WriteLine($"Total paths (ignoring constraints) from {start} to out: {pathCount}");
+
+    foreach (var node in nodes.Values)
+    {
+      var pathCount = node.PathsInto.HasValue ? node.PathsInto.Value.ToString() : "not visited";
+      Console.WriteLine($"{node.Name}'s incoming paths: {pathCount}");
+    }
   }
 }
 
