@@ -4,7 +4,8 @@ public static class DayNineProgram
   {
     var lines = File.ReadAllLines(args[1]).ToArray();
 
-    SolvePartOne(lines);
+    //SolvePartOne(lines);
+    InvestigatePartTwo(lines);
   }
 
   private static void SolvePartOne(string[] lines)
@@ -23,6 +24,18 @@ public static class DayNineProgram
     pairs.Sort((a,b) => a.AreaOfRectangle.CompareTo(b.AreaOfRectangle));
 
     Console.WriteLine(pairs.Last().AreaOfRectangle);
+  }
+
+  private static void InvestigatePartTwo(string[] lines)
+  {
+    var corners = lines.Select(Point.FromString).ToArray();
+
+    var minX = corners.Min(p => p.X);
+    var maxX = corners.Max(p => p.X);
+    var minY = corners.Min(p => p.Y);
+    var maxY = corners.Max(p => p.Y);
+
+    Console.WriteLine($"X: [{minX},{maxX}]  y: [{minY},{maxY}]");
   }
 
   private static void SolvePartTwo(string[] lines)
