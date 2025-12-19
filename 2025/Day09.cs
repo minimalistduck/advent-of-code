@@ -28,14 +28,32 @@ public static class DayNineProgram
 
   private static void InvestigatePartTwo(string[] lines)
   {
-    var corners = lines.Select(Point.FromString).ToArray();
+    var redTiles = lines.Select(Point.FromString).ToArray();
 
-    var minX = corners.Min(p => p.X);
-    var maxX = corners.Max(p => p.X);
-    var minY = corners.Min(p => p.Y);
-    var maxY = corners.Max(p => p.Y);
+    var greenEdgeTiles = new List<Point>();
+    for (var i = 0; i < redTiles.Length - 1; i++)
+    {
+      var dx = Math.Sign(redTiles[i+1].X - redTiles[i].X);
+      var dy = Math.Sign(redTiles[i+1].Y - redTiles[i].Y);
 
-    Console.WriteLine($"X: [{minX},{maxX}]  y: [{minY},{maxY}]");
+      var greenX = redTiles[i].X;
+      var greenY = redTiles[i].Y;
+
+      while (greenX + dx != redTiles[i+1].X || greenY + dy != redTiles[i+1].Y)
+      {
+        greenX += dx;
+        greenY += dy;
+        greenEdgeTiles.Add(Point.FromXY(greenX, greenY));
+      }
+    }
+
+    // X: [1841,98477]  y: [1675,98470]
+    var minX = greenEdgeTiles.Min(p => p.X);
+    var maxX = greenEdgeTiles.Max(p => p.X);
+    var minY = greenEdgeTiles.Min(p => p.Y);
+    var maxY = greenEdgeTiles.Max(p => p.Y);
+
+    Console.WriteLine($"X: [{minX},{maxX}]  Y: [{minY},{maxY}]  # green edge tiles: {greenEdgeTiles.Count}");
   }
 
   private static void SolvePartTwo(string[] lines)
@@ -61,6 +79,11 @@ public class Point
   {
     var split = inputLine.Split(",").Select(long.Parse).ToArray();
     return new Point(split[0], split[1]);
+  }
+
+  public static Point FromXY(long y, long y)
+  {
+    return new Point(x, y);
   }
 }
 
