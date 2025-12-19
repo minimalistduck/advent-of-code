@@ -96,8 +96,8 @@ public static class DayElevenProgram
 
     foreach (var node in nodes.Values)
     {
-      var pathCount = node.PathsInto.HasValue ? node.PathsInto.Value.ToString() : "not visited";
-      Console.WriteLine($"{node.Name}'s incoming paths: {pathCount}");
+      var nodePathText = node.PathsInto.HasValue ? node.PathsInto.Value.ToString() : "not visited";
+      Console.WriteLine($"{node.Name}'s incoming paths: {nodePathText}");
     }
   }
 }
