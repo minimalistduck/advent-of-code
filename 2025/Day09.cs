@@ -81,7 +81,7 @@ public class Point
     return new Point(split[0], split[1]);
   }
 
-  public static Point FromXY(long y, long y)
+  public static Point FromXY(long x, long y)
   {
     return new Point(x, y);
   }
