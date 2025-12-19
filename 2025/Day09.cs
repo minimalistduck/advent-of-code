@@ -47,13 +47,12 @@ public static class DayNineProgram
       }
     }
 
-    // X: [1841,98477]  y: [1675,98470]
     var minX = greenEdgeTiles.Min(p => p.X);
     var maxX = greenEdgeTiles.Max(p => p.X);
     var minY = greenEdgeTiles.Min(p => p.Y);
     var maxY = greenEdgeTiles.Max(p => p.Y);
 
-    Console.WriteLine($"X: [{minX},{maxX}]  Y: [{minY},{maxY}]  # green edge tiles: {greenEdgeTiles.Count}");
+    Console.WriteLine($"X~[{minX},{maxX}] Y~[{minY},{maxY}]   {redTiles} red corner tiles   {greenEdgeTiles.Count} green edge tiles");
   }
 
   private static void SolvePartTwo(string[] lines)
