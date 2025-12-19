@@ -113,6 +113,8 @@ public class Node
     _name = name;
   }
 
+  public string Name => _name;
+
   public void AddIncomingNode(Node other)
   {
     _incomingNodes.Add(other);
