@@ -68,54 +68,63 @@ public static class DayElevenProgram
 
   private static void SolvePartTwo(Dictionary<string, string[]> edgeDict, string start)
   {
-    var partTwo = 0;
+    var nodes = new Dictionary<string, Node>();
 
-    var initialQueue = new Queue<string>();
-    initialQueue.Enqueue(start);
-    var unsearched = new Stack<Queue<string>>();
-    unsearched.Push(initialQueue);
-    var path = new Stack<string>();
-
-    var done = false;
-    while (!done)
+    foreach (var nodeName in edgeDict.Keys)
     {
-      var workQueue = unsearched.Peek();
-      while (workQueue.Count == 0 && unsearched.Count > 0)
-      {
-        unsearched.Pop();
-        path.Pop();
-        workQueue = unsearched.Peek();
-      }
-      if (workQueue.Count == 0)
-        continue;
-
-      var item = workQueue.Dequeue();
-      var pathSet = new HashSet<string>(path);
-      if (pathSet.Contains(item))
-      {
-        throw new InvalidOperationException("Cycle detected: " +
-          string.Join("->", path.Reverse()) + "->" + item);
-      }
-      if (item.Equals("out"))
-      {
-        if (pathSet.Contains("dac") && pathSet.Contains("fft"))
-        {
-          partTwo++;
-        }
-      }
-      else
-      {
-        var nextItems = edgeDict[item];
-        if (nextItems.Length > 0)
-        {
-          var deeperQueue = new Queue<string>(nextItems);
-          unsearched.Push(deeperQueue);
-          path.Push(item);
-        }
-      }
-      done = unsearched.Sum(q => q.Count) == 0;
+      nodes[nodeName] = new Node(nodeName);
     }
 
-    Console.WriteLine(partTwo);
+    foreach (var entry in edgeDict)
+    {
+      var fromNode = nodes[entry.Key];
+      foreach (var toNode in entry.Value)
+      {
+        toNode.AddIncomingNode(fromNode);
+      }
+    }
+
+    nodes[start].PathsInto = 1;
+    foreach (var node in nodes.Values.Where(n => !n.PathsInto.HasValue && !n.HasIncomingNodes))
+    {
+      node.PathsInto = 0;
+    }
+
+    var targetNode = nodes["out"];
+    var pathCount = targetNode.CalculatePathsInto();
+    Console.WriteLine($"Total paths (ignoring constraints) from {start} to out: {pathCount}");
+  }
+}
+
+public class Node
+{
+  private readonly List<Node> _incomingNodes = new List<Node>();
+  private readonly string _name;
+  public int? PathsInto = null;
+  
+  public Node(string name)
+  {
+    _name = name;
+  }
+
+  public void AddIncomingNode(Node other)
+  {
+    _incomingNodes.Add(other);
+  }
+
+  public bool HasIncomingNodes => _incomingNodes.Count > 0;
+
+  public int CalculatePathsInto()
+  {
+    if (PathsInto.HasValue)
+      return PathsInto.Value;
+
+    var result = 0;
+    foreach (var earlierNode in _incomingNodes)
+    {
+      result += earlierNode.CalculatePathsInto();
+    }
+    PathsInto = result;
+    return result;
   }
 }
