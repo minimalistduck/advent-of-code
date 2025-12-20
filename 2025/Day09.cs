@@ -105,7 +105,7 @@ public static class DayNineProgram
       var y = yLookup[redTile.Y];
       grid[x,y] = Colour.Red;
 
-      var iNext = i+1 & redTiles.Length;
+      var iNext = i+1 % redTiles.Length;
       var xNext = xLookup[redTiles[iNext].X];
       var yNext = yLookup[redTiles[iNext].Y];
       
