@@ -75,6 +75,7 @@ public static class DayNineProgram
       {
         axis[j] = new Range(axis[j-1].Upper + 1, axis[j+1].Lower - 1, j);
       }
+      return axis;
     }
     var xAxis = DeriveAxis(widthOfReducedGrid, distinctX.ToArray());
     var yAxis = DeriveAxis(heightOfReducedGrid, distinctY.ToArray());
