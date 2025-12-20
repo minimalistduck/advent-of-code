@@ -30,6 +30,7 @@ public static class DayNineProgram
   {
     var redTiles = lines.Select(Point.FromString).ToArray();
 
+    /*
     var greenEdgeTiles = new List<Point>();
     for (var i = 0; i < redTiles.Length - 1; i++)
     {
@@ -53,7 +54,7 @@ public static class DayNineProgram
     var maxY = greenEdgeTiles.Max(p => p.Y);
 
     Console.WriteLine($"X~[{minX},{maxX}] Y~[{minY},{maxY}]   {redTiles.Length} red corner tiles   {greenEdgeTiles.Count} green edge tiles");
-
+    */
     var distinctX = new SortedSet<long>();
     var distinctY = new SortedSet<long>();
 
@@ -71,16 +72,59 @@ public static class DayNineProgram
       {
         axis[i*2] = new Range(requiredPoints[i], requiredPoints[i], i*2);
       }
+      // These interim ranges are allowed to be size 0
       for (var j = 1; j < axis.Length; j += 2)
       {
         axis[j] = new Range(axis[j-1].Upper + 1, axis[j+1].Lower - 1, j);
       }
       return axis;
     }
-    var xAxis = DeriveAxis(widthOfReducedGrid, distinctX.ToArray());
-    var yAxis = DeriveAxis(heightOfReducedGrid, distinctY.ToArray());
+    var distinctXArr = distinctX.ToArray();
+    var xAxis = DeriveAxis(widthOfReducedGrid, distinctXArr);
 
-    Console.WriteLine("Derived reduced axes");
+    var distinctYArr = distinctY.ToArray();
+    var yAxis = DeriveAxis(heightOfReducedGrid, distinctYArr);
+
+    var xLookup = new Dictionary<long, int>();
+    for (var i = 0; i < distinctXArr.Length; i++)
+    {
+      xLookup[distinctXArr[i]] = i;
+    }
+
+    var yLookup = new Dictionary<long, int>();
+    for (var i = 0; i < distinctYArr.Length; i++)
+    {
+      yLookup[distinctYArr[i]] = i;
+    }
+
+    var grid = new Colour[widthOfReducedGrid,heightOfReducedGrid];
+    for (var i = 0; i < redTiles.Length; i++)
+    {
+      var redTile = redTiles[i];
+      var x = xLookup[redTile.X];
+      var y = yLookup[redTile.Y];
+      grid[x,y] = Colour.Red;
+
+      var iNext = i+1 & redTiles.Length;
+      var xNext = xLookup[redTiles[iNext].X];
+      var yNext = yLookup[redTiles[iNext].Y];
+      
+      var dx = Math.Sign(xNext - x);
+      var dy = Math.Sign(yNext - y);
+
+      var greenX = x;
+      var greenY = y;
+      while (greenX + dx != xNext || greenY + dy != yNext)
+      {
+        greenX += dx;
+        greenY += dy;
+        grid[greenX,greenY] = Colour.Green;
+      }
+    }
+
+    // TODO: Need to do the green fill
+
+    Console.WriteLine("Done red corners and green edges in reduced grid");
   }
 
   private static void SolvePartTwo(string[] lines)
@@ -138,9 +182,6 @@ public class Range
 
   public Range(long lower, long upper, int index)
   {
-    if (lower > upper)
-      throw new ArgumentException("Upper bound of range must be higher or equal to lower bound");
-    
     _lowerInOriginalSpace = lower;
     _upperInOriginalSpace = upper;
     _indexInReducedSpace = index;
@@ -151,8 +192,6 @@ public class Range
   public long Upper => _upperInOriginalSpace;
 
   public int Index => _indexInReducedSpace;
-
-  public Colour Colour { get; set; }
 }
 
 public enum Colour
