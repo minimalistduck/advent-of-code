@@ -60,7 +60,26 @@ public static class DayNineProgram
     distinctX.UnionWith(redTiles.Select(rt => rt.X));
     distinctY.UnionWith(redTiles.Select(rt => rt.Y));
 
-    Console.WriteLine($"Minimal representative grid would be {distinctX.Count * 2 - 1} x {distinctY.Count * 2 - 1}");
+    var widthOfReducedGrid = distinctX.Count * 2 - 1;
+    var heightOfReducedGrid = distinctY.Count * 2 - 1;
+    Console.WriteLine($"Minimal representative grid would be {widthOfReducedGrid} x {heightOfReducedGrid}");
+
+    Range[] DeriveAxis(int sizeOfAxis, long[] requiredPoints)
+    {
+      var axis = new Range[sizeOfAxis];
+      for (var i = 0; i < requiredPoints.Length; i++)
+      {
+        axis[i*2] = new Range(requiredPoints[i], requiredPoints[i], i*2);
+      }
+      for (var j = 1; j < axis.Length; j += 2)
+      {
+        axis[j] = new Range(axis[j-1].Upper + 1, axis[j+1].Lower - 1, j);
+      }
+    }
+    var xAxis = DeriveAxis(widthOfReducedGrid, distinctX.ToArray());
+    var yAxis = DeriveAxis(heightOfReducedGrid, distinctY.ToArray());
+
+    Console.WriteLine("Derived reduced axes");
   }
 
   private static void SolvePartTwo(string[] lines)
@@ -108,4 +127,36 @@ public class PairOfPoints
     var height = Math.Abs(second.Y-first.Y) + 1L;
     AreaOfRectangle = width * height;
   }
+}
+
+public class Range
+{
+  private readonly long _lowerInOriginalSpace;
+  private readonly long _upperInOriginalSpace;
+  private readonly int _indexInReducedSpace;
+
+  public Range(long lower, long upper, int index)
+  {
+    if (lower > upper)
+      throw new ArgumentException("Upper bound of range must be higher or equal to lower bound");
+    
+    _lowerInOriginalSpace = lower;
+    _upperInOriginalSpace = upper;
+    _indexInReducedSpace = index;
+  }
+
+  public long Lower => _lowerInOriginalSpace;
+
+  public long Upper => _upperInOriginalSpace;
+
+  public int Index => _indexInReducedSpace;
+
+  public Colour Colour { get; set; }
+}
+
+public enum Colour
+{
+  White,
+  Red,
+  Green
 }
