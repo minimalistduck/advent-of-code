@@ -53,6 +53,14 @@ public static class DayNineProgram
     var maxY = greenEdgeTiles.Max(p => p.Y);
 
     Console.WriteLine($"X~[{minX},{maxX}] Y~[{minY},{maxY}]   {redTiles.Length} red corner tiles   {greenEdgeTiles.Count} green edge tiles");
+
+    var distinctX = new SortedSet<long>();
+    var distinctY = new SortedSet<long>();
+
+    distinctX.UnionWith(redTiles.Select(rt => rt.X));
+    distinctY.UnionWith(redTiles.Select(rt => rt.Y));
+
+    Console.WriteLine($"Minimal representative grid would be {distinctX.Count * 2 - 1} x {distinctY.Count * 2 - 1}");
   }
 
   private static void SolvePartTwo(string[] lines)
