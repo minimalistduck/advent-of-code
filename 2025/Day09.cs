@@ -122,7 +122,7 @@ public static class DayNineProgram
       }
     }
 
-    var midY = height / 2;
+    var midY = heightOfReducedGrid / 2;
     var x = 0;
     var inside = false;
     while (!inside || grid[x,midY] != Colour.White)
@@ -132,7 +132,7 @@ public static class DayNineProgram
         inside = !inside;
       x++;
     }
-    Console.WriteLine($"There is an inside space at {x},{midy} where we could start filling");
+    Console.WriteLine($"There is an inside space at {x},{midY} where we could start filling");
     // TODO: Need to do the green fill
 
     //Console.WriteLine("Done red corners and green edges in reduced grid");
