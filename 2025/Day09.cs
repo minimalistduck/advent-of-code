@@ -30,42 +30,17 @@ public static class DayNineProgram
   {
     var redTiles = lines.Select(Point.FromString).ToArray();
 
-    /*
-    var greenEdgeTiles = new List<Point>();
-    for (var i = 0; i < redTiles.Length - 1; i++)
-    {
-      var dx = Math.Sign(redTiles[i+1].X - redTiles[i].X);
-      var dy = Math.Sign(redTiles[i+1].Y - redTiles[i].Y);
-
-      var greenX = redTiles[i].X;
-      var greenY = redTiles[i].Y;
-
-      while (greenX + dx != redTiles[i+1].X || greenY + dy != redTiles[i+1].Y)
-      {
-        greenX += dx;
-        greenY += dy;
-        greenEdgeTiles.Add(Point.FromXY(greenX, greenY));
-      }
-    }
-
-    var minX = greenEdgeTiles.Min(p => p.X);
-    var maxX = greenEdgeTiles.Max(p => p.X);
-    var minY = greenEdgeTiles.Min(p => p.Y);
-    var maxY = greenEdgeTiles.Max(p => p.Y);
-
-    Console.WriteLine($"X~[{minX},{maxX}] Y~[{minY},{maxY}]   {redTiles.Length} red corner tiles   {greenEdgeTiles.Count} green edge tiles");
-    */
-    var distinctX = new SortedSet<long>();
-    var distinctY = new SortedSet<long>();
-
+    var distinctX = new SortedSet<int>();
     distinctX.UnionWith(redTiles.Select(rt => rt.X));
-    distinctY.UnionWith(redTiles.Select(rt => rt.Y));
-
     var widthOfReducedGrid = distinctX.Count * 2 - 1;
+
+    var distinctY = new SortedSet<int>();
+    distinctY.UnionWith(redTiles.Select(rt => rt.Y));
     var heightOfReducedGrid = distinctY.Count * 2 - 1;
+    
     Console.WriteLine($"Minimal representative grid would be {widthOfReducedGrid} x {heightOfReducedGrid}");
 
-    Range[] DeriveAxis(int sizeOfAxis, long[] requiredPoints)
+    Range[] DeriveAxis(int sizeOfAxis, int[] requiredPoints)
     {
       var axis = new Range[sizeOfAxis];
       for (var i = 0; i < requiredPoints.Length; i++)
@@ -133,7 +108,29 @@ public static class DayNineProgram
       possX++;
     }
     Console.WriteLine($"There is an inside space at {possX},{midY} where we could start filling");
-    // TODO: Need to do the green fill
+    
+    var worklist = new Queue<Point>();
+    worklist.Enqueue(Point.FromXY(possX,midY));
+    var xOffsets = new [] { 0, 1, 0, -1 };
+    var yOffsets = new [] { 1, 0, -1, 0 };
+    var fillCount = 0;
+    while (worklist.Count > 0)
+    {
+      var here = worklist.Dequeue();
+      grid[here.X, here.Y] = Colour.Green;
+      fillCount++;
+      for (int i = 0; i < 4; i++)
+      {
+        var nextX = here.X + xOffsets[i];
+        var nextY = here.Y + yOffsets[i];
+        if (nextX >= 0 && nextX < widthOfReducedGrid && nextY >= 0 && nextY < heightOfReducedGrid &&
+           grid[nextX,nextY] == Colour.White)
+        {
+          worklist.Enqueue(Point.FromXY(nextX,nextY));
+        }
+      }
+    }
+    Console.WriteLine($"Filled {fillCount} squares");
 
     //Console.WriteLine("Done red corners and green edges in reduced grid");
   }
@@ -148,10 +145,10 @@ public static class DayNineProgram
 
 public class Point
 {
-  public readonly long X;
-  public readonly long Y;
+  public readonly int X;
+  public readonly int Y;
   
-  private Point(long x, long y)
+  private Point(int x, int y)
   {
     X = x;
     Y = y;
@@ -159,11 +156,11 @@ public class Point
   
   public static Point FromString(string inputLine)
   {
-    var split = inputLine.Split(",").Select(long.Parse).ToArray();
+    var split = inputLine.Split(",").Select(int.Parse).ToArray();
     return new Point(split[0], split[1]);
   }
 
-  public static Point FromXY(long x, long y)
+  public static Point FromXY(int x, int y)
   {
     return new Point(x, y);
   }
@@ -179,9 +176,9 @@ public class PairOfPoints
   {
     First = first;
     Second = second;
-    var width = Math.Abs(second.X-first.X) + 1L;
-    var height = Math.Abs(second.Y-first.Y) + 1L;
-    AreaOfRectangle = width * height;
+    var width = Math.Abs(second.X-first.X) + 1;
+    var height = Math.Abs(second.Y-first.Y) + 1;
+    AreaOfRectangle = (long)width * (long)height;
   }
 }
 
