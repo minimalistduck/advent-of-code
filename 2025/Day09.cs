@@ -60,13 +60,13 @@ public static class DayNineProgram
     var distinctYArr = distinctY.ToArray();
     var yAxis = DeriveAxis(heightOfReducedGrid, distinctYArr);
 
-    var xLookup = new Dictionary<long, int>();
+    var xLookup = new Dictionary<int, int>();
     for (var i = 0; i < distinctXArr.Length; i++)
     {
       xLookup[distinctXArr[i]] = i;
     }
 
-    var yLookup = new Dictionary<long, int>();
+    var yLookup = new Dictionary<int, int>();
     for (var i = 0; i < distinctYArr.Length; i++)
     {
       yLookup[distinctYArr[i]] = i;
