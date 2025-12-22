@@ -172,6 +172,7 @@ public static class DayNineProgram
     while (!solved && p < pairs.Count)
     {
       var possPair = pairs[p];
+      Console.WriteLine($"Considering {possPair}");
       p++;
       var startX = Math.Min(possPair.First.X, possPair.Second.X);
       var finishX = Math.Max(possPair.First.X, possPair.Second.X);
@@ -250,6 +251,11 @@ public class PairOfPoints
     var width = Math.Abs(xRanges[Second.X].Lower - xRanges[First.X].Lower) + 1;
     var height = Math.Abs(yRanges[Second.Y].Lower - yRanges[First.Y].Lower) + 1;
     AreaOfRectangle = (long)width * (long)height;
+  }
+
+  public override string ToString()
+  {
+    return $"{First.X},{First.Y} - {Second.X},{Second.Y} with area of {AreaOfRectangle}";
   }
 }
 
