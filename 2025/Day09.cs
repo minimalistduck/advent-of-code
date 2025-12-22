@@ -171,6 +171,7 @@ public static class DayNineProgram
     while (!solved && p < pairs.Count)
     {
       var possPair = pairs[p];
+      p++;
       var startX = Math.Min(possPair.First.X, possPair.Second.X);
       var finishX = Math.Max(possPair.First.X, possPair.Second.X);
       var startY = Math.Min(possPair.First.Y, possPair.Second.Y);
