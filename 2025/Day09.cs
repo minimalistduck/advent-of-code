@@ -5,6 +5,7 @@ public static class DayNineProgram
     var lines = File.ReadAllLines(args[1]).ToArray();
 
     //SolvePartOne(lines);
+    // 2493819 is too low
     InvestigatePartTwo(lines);
   }
 
