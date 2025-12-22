@@ -109,24 +109,30 @@ public static class DayNineProgram
     }
     Console.WriteLine($"There is an inside space at {possX},{midY} where we could start filling");
     
-    var worklist = new Queue<Point>();
-    worklist.Enqueue(Point.FromXY(possX,midY));
+    var frontier = new Queue<Point>();
+    frontier.Enqueue(Point.FromXY(possX,midY));
     var xOffsets = new [] { 0, 1, 0, -1 };
     var yOffsets = new [] { 1, 0, -1, 0 };
     var fillCount = 0;
-    while (worklist.Count > 0)
+    while (frontier.Count > 0)
     {
-      var here = worklist.Dequeue();
-      grid[here.X, here.Y] = Colour.Green;
-      fillCount++;
-      for (int i = 0; i < 4; i++)
+      Console.WriteLine($"Filling {frontier.Count} point(s) on the frontier");
+      var worklist = frontier.ToArray();
+      frontier.Clear();
+      foreach (var here in worklist)
       {
-        var nextX = here.X + xOffsets[i];
-        var nextY = here.Y + yOffsets[i];
-        if (nextX >= 0 && nextX < widthOfReducedGrid && nextY >= 0 && nextY < heightOfReducedGrid &&
-           grid[nextX,nextY] == Colour.White)
+        grid[here.X, here.Y] = Colour.Green;
+        fillCount++;
+        for (int i = 0; i < 4; i++)
         {
-          worklist.Enqueue(Point.FromXY(nextX,nextY));
+          var nextX = here.X + xOffsets[i];
+          var nextY = here.Y + yOffsets[i];
+          if (nextX >= 0 && nextX < widthOfReducedGrid && nextY >= 0 && nextY < heightOfReducedGrid &&
+             grid[nextX,nextY] == Colour.White)
+          {
+            // TODO: we're probably enqueing duplicate
+            worklist.Enqueue(Point.FromXY(nextX,nextY));
+          }
         }
       }
     }
