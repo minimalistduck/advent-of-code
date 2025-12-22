@@ -180,7 +180,7 @@ public static class DayNineProgram
       {
         for (var x = startX; x <= finishX && stillPoss; x++)
         {
-          stillPoss = grid[x,y] != Colour.White)
+          stillPoss = grid[x,y] != Colour.White;
         }
       }
       if (stillPoss)
