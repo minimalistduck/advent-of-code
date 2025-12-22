@@ -116,7 +116,6 @@ public static class DayNineProgram
     var fillCount = 0;
     while (frontier.Count > 0)
     {
-      Console.WriteLine($"Filling {frontier.Count} point(s) on the frontier");
       var worklist = frontier.ToArray();
       frontier.Clear();
       foreach (var here in worklist)
@@ -140,7 +139,62 @@ public static class DayNineProgram
     }
     Console.WriteLine($"Filled {fillCount} squares");
 
-    //Console.WriteLine("Done red corners and green edges in reduced grid");
+    var pairs = new List<PairOfPoints>();
+    for (var i = 0; i < redTiles.Length - 1; i++)
+    {
+      for (var j = i+1; j < redTiles.Length; j++)
+      {
+        var xi = xLookup[redTiles[i].X];
+        var yi = yLookup[redTiles[i].Y];
+        var pi = Point.FromXY(xi,yi);
+        var xj = xLookup[redTiles[j].X];
+        var yj = xLookup[redTiles[j].Y];
+        var pj = Point.FromXY(xj,yj);
+        pairs.Add(new PairOfPoints(pi, pj));
+      }
+    }
+
+    // Now. similar to part 1, we need to know the rectangles with red opposite
+    // corners. We need to dismiss any that have a white square inside.
+    // We need to find the one with biggest area *when rescaled onto the original axes* 
+
+    foreach (var pair in pairs)
+    {
+      pair.RescaleArea(xAxis, yAxis);
+    }
+
+    pairs.Sort((a,b) => a.AreaOfRectangle.CompareTo(b.AreaOfRectangle));
+    pairs.Reverse();
+
+    var solved = false;
+    var p = 0;
+    while (!solved && p < pairs.Count)
+    {
+      var possPair = pairs[p];
+      var startX = Math.Min(possPair.First.X, possPair.Second.X);
+      var finishX = Math.Max(possPair.First.X, possPair.Second.X);
+      var startY = Math.Min(possPair.First.Y, possPair.Second.Y);
+      var finishY = Math.Max(possPair.First.Y, possPair.Second.Y);
+      var stillPoss = true;
+      for (var y = startY; y <= finishY && stillPoss; y++)
+      {
+        for (var x = startX; x <= finishX && stillPoss; x++)
+        {
+          stillPoss = grid[x,y] != Colour.White)
+        }
+      }
+      if (stillPoss)
+      {
+        solved = true;
+        Console.WriteLine($"Part two: {possPair.AreaOfRectangle}");
+      }
+    }
+
+    // I am not sure how much efficiency matters in answering whether there is a white
+    // tile or not. If it needs improving, I am thinking the white tiles could be sorted 
+    // and we could use binary search, but they'd need to be indexed on both axes
+    // and we'd need to know whether any of the tiles we'd found on one axis was also
+    // found on the other axis.
   }
 
   private static void SolvePartTwo(string[] lines)
@@ -178,7 +232,7 @@ public class PairOfPoints
 {
   public readonly Point First;
   public readonly Point Second;
-  public readonly long AreaOfRectangle; 
+  public long AreaOfRectangle { get; private set; } 
 
   public PairOfPoints(Point first, Point second)
   {
@@ -186,6 +240,13 @@ public class PairOfPoints
     Second = second;
     var width = Math.Abs(second.X-first.X) + 1;
     var height = Math.Abs(second.Y-first.Y) + 1;
+    AreaOfRectangle = (long)width * (long)height;
+  }
+
+  public void RescaleArea(Range[] xRanges, Rangs[] yRanges)
+  {
+    var width = Math.Abs(xRanges[Second.X].Lower - xRanges[First.X].Lower) + 1;
+    var height = Math.Abs(yRanges[Second.Y].Lower - yRanges[First.Y].Lower) + 1;
     AreaOfRectangle = (long)width * (long)height;
   }
 }
