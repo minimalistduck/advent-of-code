@@ -6,6 +6,7 @@ public static class DayNineProgram
 
     //SolvePartOne(lines);
     // 2493819 is too low
+    // 1164604815 is too low
     InvestigatePartTwo(lines);
   }
 
