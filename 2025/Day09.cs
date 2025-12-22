@@ -148,7 +148,7 @@ public static class DayNineProgram
         var yi = yLookup[redTiles[i].Y];
         var pi = Point.FromXY(xi,yi);
         var xj = xLookup[redTiles[j].X];
-        var yj = xLookup[redTiles[j].Y];
+        var yj = yLookup[redTiles[j].Y];
         var pj = Point.FromXY(xj,yj);
         pairs.Add(new PairOfPoints(pi, pj));
       }
