@@ -122,9 +122,20 @@ public static class DayNineProgram
       }
     }
 
+    var midY = height / 2;
+    var x = 0;
+    var inside = false;
+    while (!inside || grid[x,midY] != Colour.White)
+    {
+      var onEdge = grid[x,midY] != Colour.White;
+      if (onEdge)
+        inside = !inside;
+      x++;
+    }
+    Console.WriteLine($"There is an inside space at {x},{midy} where we could start filling");
     // TODO: Need to do the green fill
 
-    Console.WriteLine("Done red corners and green edges in reduced grid");
+    //Console.WriteLine("Done red corners and green edges in reduced grid");
   }
 
   private static void SolvePartTwo(string[] lines)
