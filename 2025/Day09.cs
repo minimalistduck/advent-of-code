@@ -243,7 +243,7 @@ public class PairOfPoints
     AreaOfRectangle = (long)width * (long)height;
   }
 
-  public void RescaleArea(Range[] xRanges, Rangs[] yRanges)
+  public void RescaleArea(Range[] xRanges, Range[] yRanges)
   {
     var width = Math.Abs(xRanges[Second.X].Lower - xRanges[First.X].Lower) + 1;
     var height = Math.Abs(yRanges[Second.Y].Lower - yRanges[First.Y].Lower) + 1;
