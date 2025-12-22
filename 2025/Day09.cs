@@ -131,7 +131,7 @@ public static class DayNineProgram
              grid[nextX,nextY] == Colour.White)
           {
             // TODO: we're probably enqueing duplicate
-            worklist.Enqueue(Point.FromXY(nextX,nextY));
+            frontier.Enqueue(Point.FromXY(nextX,nextY));
           }
         }
       }
