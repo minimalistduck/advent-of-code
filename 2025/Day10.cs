@@ -133,3 +133,146 @@ public class SolvedEventArgs : EventArgs
     Iteration = iteration;
   }
 }
+
+// Beginning of work for part 2
+public class ProblemStep
+{
+   public readonly int[] Target;
+   // in this representation, each button has Size elements
+   // which are either 1 or 0
+   public readonly int[][] Buttons;
+   public int Size => Target.Length;
+   
+   private ProblemStep(int[] target, int[][] buttons)
+   {
+      Target = target;
+      Buttons = buttons;
+   }
+   
+   // We accept buttons in the format of the input
+   public ProblemStep Initial(int[] target, int[][] buttonIndices)
+   {
+      var buttons = new int[][buttonIndices.Length];
+      for (var i = 0; i < buttonIndices.Length; i++)
+      {
+         buttons[i] = new int[target.Length];
+         foreach (var buttonIndex in buttonIndices[i])
+         {
+            buttons[buttonIndex] = 1;
+         }
+      }
+      return new ProblemStep(target, buttons);
+   }
+   
+   public ProblemStep AfterPressing(int buttonIndex, int pressCount)
+   {
+      var newTarget = new int[Size];
+      for (var i = 0; i < Size; i++)
+      {
+         newTarget[i] = Target[i] - Buttons[buttonIndex][i] * pressCount;
+      }
+      return new ProblemStep(newTarget, Buttons);
+   }
+   
+   public ProblemStep Reduced()
+   {
+      List<int> keepIndexes = new List<int>();
+      List<int> dropIndexes = new List<int>();
+      for (var oldIndex = 0; oldIndex < Size; oldIndex++)
+      {
+         if (Target[oldIndex] > 0)
+         {
+            keepIndexes.Add(oldIndex);
+         }
+         else
+         {
+            dropIndexes.Add(oldIndex);
+         }
+      }
+      
+      // If we're keeping everything, the reduced problem is identical to this one
+      if (keepIndexes.Count == Target.Length)
+      {
+         return this;
+      }
+      
+      var newTarget = new int[keepIndexes.Count];
+      for (var newIndex = 0; newIndex < keepIndexes.Count; newIndex++)
+      {
+         newTarget[newIndex] = Target[keepIndexes[newIndex]]
+      }
+      
+      var newButtons = new List<int[]>();
+      foreach (var oldButton in Buttons)
+      {
+         var keep = true;
+         foreach (var dropIndex in dropIndexes)
+         {
+            keep = keep && oldButton[dropIndex] == 0;
+         }
+         
+         if (keep)
+         {
+            var newButton = new int[keepIndexes.Count];
+            for (var newIndex = 0; newIndex < keepIndexes.Count; newIndex++)
+            {
+               newButton[newIndex] = oldButton[keepIndexes[newIndex]];
+            }
+            newButtons.Add(newButton);
+         }
+      }
+
+      return new ProblemStep(newTarget, newButtons);
+   }
+}
+/*
+Given target: int[] and buttons: int[][]
+
+For indexes i where target[i] == 0
+discard buttons b where buttons[b].Contains(i)
+
+This yields a sub-problem where all elements of target are > 0.
+
+Find i where target[i] = Min(target)
+Consider buttons b' that contain i
+Which button bi leaves the lowest max after it has been pressed target[i] times?
+- is this any different from picking the button with most non-zeroes?
+- do we need to go to next-max to break ties?
+- use total remaining instead of max?
+
+Increment number of presses by target[i]
+Solve the sub-problem which remains after bi has been pressed target[i] times
+
+Is it possible to miss any solutions with this algorithm?
+Might it lead to a non-minimal solution? an infeasible solution?
+
+presses = 0
+{10,11,11,5,10,5}
+- no zeros to remove -> no buttons removed
+i = 3; target[3] = 5
+Buttons containing 3: b0=(0,1,2,3,4), b1=(0,3,4)
+After b0*5: {5,6,6,0,5,5}
+After b1*5: {5,11,11,0,5,5}
+b0 has the lowest max
+presses = 5
+
+{5,6,6,0,5,5}
+reduce to {5,6,6,5,5} (0,1,2,4->3,5->4) (1,2)
+i = 0; target[0] = 5
+Buttons containing 0: b0=(0,1,2,3,4)
+After b0*5: {0,1,1,0,0}
+b0 has the lowest max (it's the only choice)
+presses = 10
+
+{0,1,1,0,0}
+reduce to {1,1} (1->0,2->1)
+i = 0; target[0] = 1
+Buttons containing 0: b0=(0,1)
+After b0*1: {0,0}
+b0 is the only choice
+presses = 11
+
+{0,0}
+reduce to {}
+done
+*/
